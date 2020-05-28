@@ -1,0 +1,37 @@
+name-template: "v$NEXT_PATCH_VERSION 🌈"
+tag-template: "v$NEXT_PATCH_VERSION"
+categories:
+  - title: "🚀 Features"
+    labels:
+      - "feature"
+      - "enhancement"
+
+  - title: ":bug: Bug Fixes"
+    labels:
+      - "fix"
+      - "bugfix"
+      - "bug"
+
+  - title: "🧰 Maintenance"
+    label: "chore"
+
+  - title: ":white_check_mark: Workflows"
+    label: "workflow"
+
+  - title: ":up: Dependencies"
+    label: "dependencies"
+
+  - title: ":art: Tests"
+    label: "tests"
+
+  - title: ":shirt: Config"
+    label: "tests"
+
+  - title: ":memo: Document"
+    label: "document"
+
+change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
+template: |
+  ## :sparkles: Changes :sparkles:
+
+  $CHANGES

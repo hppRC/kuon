@@ -1,0 +1,20 @@
+workflow:
+  - .github/*.yml
+  - .github/workflows/**/*
+
+dependencies:
+  - Cargo.toml
+
+source:
+  - src/**/*.rs
+
+tests:
+  - tests/**/*.rs
+
+config:
+  - Makefile.toml
+  - .gitignore
+
+document:
+  - README.md
+  - LICENSE
