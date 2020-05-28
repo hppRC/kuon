@@ -3,6 +3,12 @@ name = "kuon"
 version = "0.1.0"
 authors = ["hppRC <hpp.ricecake@gmail.com>"]
 edition = "2018"
+description = "Twitter Client Library written in Rust"
+repository = "https://github.com/hppRC/kuon"
+license = "MIT"
+readme = "README.md"
+categories = ["api-bindings"] # https://crates.io/category_slugs
+keywords = []
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
