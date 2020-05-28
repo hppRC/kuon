@@ -1,3 +1,7 @@
+mod auth;
+mod constants;
+mod models;
+
 #[cfg(test)]
 mod tests {
     #[test]
