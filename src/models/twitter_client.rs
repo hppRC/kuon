@@ -63,12 +63,6 @@ mod test {
 
     #[tokio::test]
     async fn test() -> Result<()> {
-        let api_key = &std::env::var("API_KEY").unwrap();
-        let api_secret_key = &std::env::var("API_SECRET_KEY").unwrap();
-
-        let bearer: BearerToken = TwitterClient::get_bearer(api_key, api_secret_key).await?;
-        dbg!(&bearer);
-        assert_eq!(bearer.token_type, "bearer");
         Ok(())
     }
 }

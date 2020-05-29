@@ -32,19 +32,6 @@ mod test {
 
     #[tokio::test]
     async fn test() -> Result<()> {
-        let access_token = &std::env::var("ACCESS_TOKEN").unwrap();
-        let access_token_secret = &std::env::var("ACCESS_TOKEN_SECRET").unwrap();
-        let api_key = &std::env::var("API_KEY").unwrap();
-        let api_secret_key = &std::env::var("API_SECRET_KEY").unwrap();
-
-        let api =
-            TwitterClient::new(api_key, api_secret_key, access_token, access_token_secret).await?;
-        let mut params = HashMap::new();
-        params.insert("q", "rust");
-        params.insert("count", "3");
-
-        let results: SearchResult = api.search_tweets(&params).await?;
-        println!("{:?}", results.statuses[0]);
         Ok(())
     }
 }
