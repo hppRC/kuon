@@ -9,18 +9,13 @@ inspired by [anaconda](https://github.com/ChimeraCoder/anaconda)
 ### Search Tweets
 
 ```rust
-use kuon::TwitterClient;
-use std::collections::HashMap;
+let api =
+    kuon::TwitterClient::new("api_key", "api_secret_key", "access_token", "access_token_secret").await?;
 
-async fn main() -> Result<()> {
-    let api = TwitterClient::new("api_key", "api_secret_key", "access_token", "access_token_secret").await?;
+let mut params = HashMap::new();
+params.insert("q", "rust");
+params.insert("count", "3");
 
-    let mut params = HashMap::new();
-    params.insert("q", "rust");
-    params.insert("count", "3");
-
-    let results: SearchResult = api.search_tweets(&params).await?;
-
-    println!("{:?}", results.statuses);
-}
+let result = api.search_tweets(&params).await?;
+println!("{:?}", result.statuses);
 ```
