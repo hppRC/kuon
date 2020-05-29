@@ -1,50 +1,36 @@
-// type Tweet struct {
-// 	Contributors                []int64                `json:"contributors"`
-// 	Coordinates                 *Coordinates           `json:"coordinates"`
-// 	CreatedAt                   string                 `json:"created_at"`
-// 	DisplayTextRange            []int                  `json:"display_text_range"`
-// 	Entities                    Entities               `json:"entities"`
-// 	ExtendedEntities            Entities               `json:"extended_entities"`
-// 	ExtendedTweet               ExtendedTweet          `json:"extended_tweet"`
-// 	FavoriteCount               int                    `json:"favorite_count"`
-// 	Favorited                   bool                   `json:"favorited"`
-// 	FilterLevel                 string                 `json:"filter_level"`
-// 	FullText                    string                 `json:"full_text"`
-// 	HasExtendedProfile          bool                   `json:"has_extended_profile"`
-// 	Id                          int64                  `json:"id"`
-// 	IdStr                       string                 `json:"id_str"`
-// 	InReplyToScreenName         string                 `json:"in_reply_to_screen_name"`
-// 	InReplyToStatusID           int64                  `json:"in_reply_to_status_id"`
-// 	InReplyToStatusIdStr        string                 `json:"in_reply_to_status_id_str"`
-// 	InReplyToUserID             int64                  `json:"in_reply_to_user_id"`
-// 	InReplyToUserIdStr          string                 `json:"in_reply_to_user_id_str"`
-// 	IsTranslationEnabled        bool                   `json:"is_translation_enabled"`
-// 	Lang                        string                 `json:"lang"`
-// 	Place                       Place                  `json:"place"`
-// 	QuotedStatusID              int64                  `json:"quoted_status_id"`
-// 	QuotedStatusIdStr           string                 `json:"quoted_status_id_str"`
-// 	QuotedStatus                *Tweet                 `json:"quoted_status"`
-// 	PossiblySensitive           bool                   `json:"possibly_sensitive"`
-// 	PossiblySensitiveAppealable bool                   `json:"possibly_sensitive_appealable"`
-// 	RetweetCount                int                    `json:"retweet_count"`
-// 	Retweeted                   bool                   `json:"retweeted"`
-// 	RetweetedStatus             *Tweet                 `json:"retweeted_status"`
-// 	Source                      string                 `json:"source"`
-// 	Scopes                      map[string]interface{} `json:"scopes"`
-// 	Text                        string                 `json:"text"`
-// 	User                        User                   `json:"user"`
-// 	WithheldCopyright           bool                   `json:"withheld_copyright"`
-// 	WithheldInCountries         []string               `json:"withheld_in_countries"`
-// 	WithheldScope               string                 `json:"withheld_scope"`
-// 	//Geo is deprecated
-// 	//Geo                  interface{} `json:"geo"`
+// #[derive(Debug, Clone, Deserialize)]
+// pub(crate) struct RawTweet {
+//     pub coordinates: Option<RawCoordinates>,
+//     #[serde(deserialize_with = "deserialize_datetime")]
+//     pub created_at: chrono::DateTime<chrono::Utc>,
+//     pub current_user_retweet: Option<CurrentUserRetweet>,
+//     pub display_text_range: Option<(usize, usize)>,
+//     pub entities: TweetEntities,
+//     pub extended_entities: Option<ExtendedTweetEntities>,
+//     pub extended_tweet: Option<RawExtendedTweet>,
+//     pub favorite_count: i32,
+//     pub favorited: Option<bool>,
+//     pub filter_level: Option<FilterLevel>,
+//     pub id: u64,
+//     pub in_reply_to_user_id: Option<u64>,
+//     pub in_reply_to_screen_name: Option<String>,
+//     pub in_reply_to_status_id: Option<u64>,
+//     pub lang: Option<String>,
+//     pub place: Option<place::Place>,
+//     pub possibly_sensitive: Option<bool>,
+//     pub quoted_status_id: Option<u64>,
+//     pub quoted_status: Option<Box<Tweet>>,
+//     pub retweet_count: i32,
+//     pub retweeted: Option<bool>,
+//     pub retweeted_status: Option<Box<Tweet>>,
+//     #[serde(deserialize_with = "deserialize_tweet_source")]
+//     pub source: Option<TweetSource>,
+//     pub text: Option<String>,
+//     pub full_text: Option<String>,
+//     pub truncated: bool,
+//     pub user: Option<Box<user::TwitterUser>>,
+//     #[serde(default)]
+//     pub withheld_copyright: bool,
+//     pub withheld_in_countries: Option<Vec<String>>,
+//     pub withheld_scope: Option<String>,
 // }
-pub struct Tweet {}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test() {}
-}
