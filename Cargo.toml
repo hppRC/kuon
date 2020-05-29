@@ -1,6 +1,6 @@
 [package]
 name = "kuon"
-version = "0.0.0"
+version = "0.0.1"
 authors = ["hppRC <hpp.ricecake@gmail.com>"]
 edition = "2018"
 description = "Twitter Client Library written in Rust"
@@ -12,3 +12,15 @@ keywords = []
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
+anyhow = "1.0.31"
+percent-encoding = "2.1.0"
+async-trait = "0.1.31"
+# TODO #1: use specific features
+tokio = { version = "0.2.21", features = ["full"] }
+reqwest = "0.10.5"
+thiserror = "1.0.19"
+maplit = "1.0.2"
+base64 = "0.12.1"
+serde = "1.0.110"
+serde_json = "1.0.53"
+serde_derive = "1.0.110"
