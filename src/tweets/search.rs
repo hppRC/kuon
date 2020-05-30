@@ -11,7 +11,7 @@ impl TwitterAPI {
         Ok(search_results)
     }
 
-    pub async fn search_tweets_with_param(
+    pub async fn search_tweets_with_params(
         &self,
         query: &str,
         mut params: HashMap<&str, &str>,
