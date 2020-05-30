@@ -3,6 +3,8 @@
 
 ### Add
 - :memo: CHANGELOG
+- :sparkles: basic models
+- :sparkles: fav RT function
 - :sparkles: struct for handling API requests
 - :sparkles: placeholders
 - :sparkles: constants
@@ -14,9 +16,14 @@
 ### Chagne
 - :up: package version
 
+### Fix
+- :memo: typo
+
 ### Update
+- :memo: document
 - :memo: document and add example(PoC)
 - :memo: crate description
+- :up: version and CHANGELOG
 
 
 <a name="v0.0.1"></a>
