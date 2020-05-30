@@ -15,4 +15,4 @@ let api =
 let res: kuon::SearchResult = api.search_tweets("rust").await?;
 ```
 
-This crate is named after Japanese Virtual YouTuber [Chitose Kudo](https://www.youtube.com/channel/UCP2o-o6u4uX3uq1hXspl0rg)
+This crate is named after Japanese Virtual YouTuber [Chitose Kudou](https://www.youtube.com/channel/UCP2o-o6u4uX3uq1hXspl0rg)
