@@ -1,23 +1,23 @@
 - name: ready-for-merge
-  color: 02c39a
+  color: "02c39a"
 
 - name: experimental
-  color: e76f51
+  color: "e76f51"
 
 - name: WIP
-  color: 0077b6
+  color: "0077b6"
 
 - name: workflow
-  color: bfc0c0
+  color: "bfc0c0"
 
 - name: dependencies
   color: "222E50"
 
 - name: source
-  color: 88d498
+  color: "88d498"
 
 - name: tests
-  color: 3a86ff
+  color: "3a86ff"
 
 - name: config
-  color: f8e16c
+  color: "f8e16c"
