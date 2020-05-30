@@ -1,36 +1,42 @@
 use crate::models::bearer::BearerToken;
 use anyhow::Result;
 use reqwest::header::{HeaderMap, HeaderValue, AUTHORIZATION, CONTENT_TYPE};
-use serde_derive::*;
 
-#[derive(Deserialize, Debug, Clone)]
-// TODO: #3 Thinking about naming, it might be better to use TwitterAPIClient
-pub struct TwitterClient {
+#[derive(Debug, Clone)]
+// TODO: #3 Thinking about naming, it might be better to use TwitterAPI
+pub struct TwitterAPI {
     pub(crate) access_token: String,
     pub(crate) access_token_secret: String,
     pub(crate) api_key: String,
     pub(crate) api_secret_key: String,
     pub(crate) bearer: BearerToken,
+    pub(crate) client: reqwest::Client,
 }
 
-impl TwitterClient {
+impl TwitterAPI {
     pub async fn new(
         api_key: &str,
         api_secret_key: &str,
         access_token: &str,
         access_token_secret: &str,
     ) -> Result<Self> {
-        let bearer: BearerToken = Self::get_bearer(api_key, api_secret_key).await?;
+        let client = reqwest::Client::new();
+        let bearer: BearerToken = Self::get_bearer(api_key, api_secret_key, &client).await?;
         Ok(Self {
             access_token: access_token.into(),
             access_token_secret: access_token_secret.into(),
             api_key: api_key.into(),
             api_secret_key: api_secret_key.into(),
             bearer,
+            client,
         })
     }
 
-    async fn get_bearer(api_key: &str, api_secret_key: &str) -> Result<BearerToken> {
+    async fn get_bearer(
+        api_key: &str,
+        api_secret_key: &str,
+        client: &reqwest::Client,
+    ) -> Result<BearerToken> {
         let endpoint = "https://api.twitter.com/oauth2/token";
         let encoded_keys = base64::encode(&format!("{}:{}", api_key, api_secret_key));
         let header_auth = format!("Basic {}", encoded_keys);
@@ -42,8 +48,8 @@ impl TwitterClient {
             HeaderValue::from_static("application/x-www-form-urlencoded"),
         );
 
-        // TODO: better error handling
-        let text = reqwest::Client::new()
+        // TODO: #8 better error handling
+        let text = client
             .post(endpoint)
             .body("grant_type=client_credentials")
             .headers(headers)
