@@ -1,6 +1,6 @@
 [package]
 name = "kuon"
-version = "0.0.3"
+version = "0.0.4"
 authors = ["hppRC <hpp.ricecake@gmail.com>"]
 edition = "2018"
 description = "Twitter Client Library written in Rust"
@@ -14,7 +14,6 @@ keywords = []
 [dependencies]
 anyhow = "1.0.31"
 percent-encoding = "2.1.0"
-async-trait = "0.1.31"
 # TODO #1: use specific features
 tokio = { version = "0.2.21", features = ["full"] }
 reqwest = "0.10.5"
