@@ -14,7 +14,7 @@ let res = api.favorite("tweet_id").await?;
 let res = api.retweet("tweet_id").await?;
 ```
 
-## Advanced Example
+## Advanced Usage
 
 ```rust
 use std::collections::HashMap;
