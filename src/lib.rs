@@ -1,4 +1,5 @@
 mod auth;
+mod client_builder;
 mod constants;
 mod models;
 mod request;
