@@ -32,7 +32,7 @@ impl TwitterAPI {
         })
     }
 
-    pub async fn new_from_env() -> Result<Self> {
+    pub async fn new_using_env() -> Result<Self> {
         let access_token = &std::env::var("ACCESS_TOKEN")?;
         let access_token_secret = &std::env::var("ACCESS_TOKEN_SECRET")?;
         let api_key = &std::env::var("API_KEY")?;

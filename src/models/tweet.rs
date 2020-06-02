@@ -14,6 +14,7 @@ pub struct Tweet {
     pub favorited: Option<bool>,
     // pub filter_level: Option<FilterLevel>,
     pub id: u64,
+    pub id_str: String,
     pub in_reply_to_user_id: Option<u64>,
     pub in_reply_to_screen_name: Option<String>,
     pub in_reply_to_status_id: Option<u64>,
