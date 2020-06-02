@@ -33,7 +33,10 @@ impl TwitterAPI {
     }
 
     pub async fn new_using_env() -> Result<Self> {
-        let access_token = &std::env::var("ACCESS_TOKEN")?;
+        let access_token = &match std::env::var("ACCESS_TOKEN") {
+            Ok(v) => v,
+            Err(e) => return Err(anyhow::anyhow!("Missing attribute: {}", e)),
+        };
         let access_token_secret = &std::env::var("ACCESS_TOKEN_SECRET")?;
         let api_key = &std::env::var("API_KEY")?;
         let api_secret_key = &std::env::var("API_SECRET_KEY")?;
