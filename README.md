@@ -14,6 +14,26 @@ let res = api.favorite("tweet_id").await?;
 let res = api.retweet("tweet_id").await?;
 ```
 
+### Easy to use
+
+Full example.
+
+```rust
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    // Please set API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET in environment
+    let api: kuon::TwitterAPI = kuon::TwitterAPI::new_from_env().await?;
+    let res: kuon::SearchResult = api.search_tweets("rust").await?;
+
+    for tweet in res.statuses {
+        println!("{}", tweet.text);
+    }
+
+    Ok(())
+}
+```
+
+
 ## Advanced Usage
 
 ```rust
