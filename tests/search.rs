@@ -1,9 +1,8 @@
 use anyhow::Result;
-mod common;
 
 #[tokio::test]
 async fn serach_tweets() -> Result<()> {
-    let api: kuon::TwitterAPI = common::get_api_client().await?;
+    let api: kuon::TwitterAPI = kuon::TwitterAPI::new_using_env().await?;
 
     let res: kuon::SearchResult = api.search_tweets("rust").await?;
     assert_eq!(res.search_metadata.query, "rust");
@@ -13,7 +12,7 @@ async fn serach_tweets() -> Result<()> {
 
 #[tokio::test]
 async fn serach_tweets_with_params() -> Result<()> {
-    let api: kuon::TwitterAPI = common::get_api_client().await?;
+    let api: kuon::TwitterAPI = kuon::TwitterAPI::new_using_env().await?;
     let params = maplit::hashmap! { "count" => "15" };
 
     let res: kuon::SearchResult = api.search_tweets_with_params("rust", &params).await?;
