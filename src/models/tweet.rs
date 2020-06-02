@@ -1,39 +1,60 @@
 use serde_derive::*;
+use serde_json::Value;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Tweet {
-    // pub coordinates: Option<RawCoordinates>,
-    // #[serde(deserialize_with = "deserialize_datetime")]
     pub created_at: String,
-    // pub current_user_retweet: Option<CurrentUserRetweet>,
-    pub display_text_range: Option<(usize, usize)>,
-    // pub entities: TweetEntities,
-    // pub extended_entities: Option<ExtendedTweetEntities>,
-    // pub extended_tweet: Option<RawExtendedTweet>,
-    pub favorite_count: u64,
-    pub favorited: Option<bool>,
-    // pub filter_level: Option<FilterLevel>,
     pub id: u64,
     pub id_str: String,
-    pub in_reply_to_user_id: Option<u64>,
-    pub in_reply_to_screen_name: Option<String>,
-    pub in_reply_to_status_id: Option<u64>,
-    pub lang: Option<String>,
-    // pub place: Option<place::Place>,
-    pub possibly_sensitive: Option<bool>,
-    pub quoted_status_id: Option<u64>,
-    pub quoted_status: Option<Box<Tweet>>,
-    pub retweet_count: u64,
-    pub retweeted: Option<bool>,
-    pub retweeted_status: Option<Box<Tweet>>,
-    // #[serde(deserialize_with = "deserialize_tweet_source")]
-    // pub source: Option<TweetSource>,
     pub text: String,
-    // pub full_text: Option<String>,
     pub truncated: bool,
-    // pub user: Option<Box<user::TwitterUser>>,
-    #[serde(default)]
-    pub withheld_copyright: bool,
-    pub withheld_in_countries: Option<Vec<String>>,
-    pub withheld_scope: Option<String>,
+    pub entities: Box<TweetEntities>,
+    pub metadata: TweetMetadata,
+    pub source: String,
+    pub user: Value, //TODO: implement correct type
+
+    pub in_reply_to_status_id: Option<u64>,
+    pub in_reply_to_status_id_str: Option<String>,
+    pub in_reply_to_user_id: Option<u64>,
+    pub in_reply_to_user_id_str: Option<String>,
+    pub in_reply_to_screen_name: Option<String>,
+
+    pub geo: Option<Value>,          //TODO: implement correct type
+    pub coordinates: Option<Value>,  //TODO: implement correct type
+    pub place: Option<Value>,        //TODO: implement correct type
+    pub contributors: Option<Value>, //TODO: implement correct type
+    pub is_quote_status: bool,
+    pub quoted_status_id: Option<u64>,
+    pub quoted_status_id_str: Option<String>,
+
+    pub quoted_status: Option<Value>, //TODO: implement correct type
+
+    pub retweet_count: u64,
+    pub favorite_count: u64,
+    pub favorited: bool,
+    pub retweeted: bool,
+    pub possibly_sensitive: Option<bool>,
+    pub lang: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct TweetEntities {
+    hashtags: Value,
+    symbols: Value,
+    user_mentions: Value,
+    urls: Vec<EntityUrls>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct EntityUrls {
+    url: String,
+    expanded_url: String,
+    display_url: String,
+    indices: Vec<u64>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct TweetMetadata {
+    iso_language_code: String,
+    result_type: String,
 }

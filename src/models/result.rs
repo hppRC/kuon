@@ -10,7 +10,7 @@ pub struct SearchResult {
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct FavoriteResult {
-    pub user: Value,
+    pub user: Option<Value>,
 }
 
 #[derive(Deserialize, Debug, Clone)]
