@@ -18,7 +18,7 @@ async fn test() -> Result<()> {
     let params = maplit::hashmap! { "count" => "15" };
 
     let res: kuon::SearchResult = api.search_tweets("rust").await?;
-    assert_eq!(res.search_metadata, "");
+    assert_eq!(res.search_metadata.query, "rust");
 
     let res = api.search_tweets_with_params("rust", &params).await?;
     let res = api.search_tweets_with_params("rust", &params).await?;
