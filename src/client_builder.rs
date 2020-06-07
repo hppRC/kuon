@@ -3,6 +3,37 @@ use crate::TwitterAPI;
 use anyhow::Result;
 use reqwest::header::{HeaderMap, HeaderValue, AUTHORIZATION, CONTENT_TYPE};
 
+/// A `ClientBuilder` can help construct a [`TwitterAPI`] instance with your configuration.
+/// Before calling [`build`] method, you must set four values:
+///
+/// 1. `Access token`
+/// 2. `Access token secret`
+/// 3. `API key`
+/// 4. `API secret key`
+///
+/// The four setter methods can be called with any order.
+///
+/// # Example
+///
+/// ```rust
+/// # async fn doc() -> Result<(), anyhow::Error> {
+/// use kuon::ClientBuilder;
+/// let builder = ClientBuilder::new();
+///
+/// // The order of setter methods can be changed.
+/// let api_client = builder
+///     .access_token("YOUR_ACCESS_TOKEN")
+///     .access_token_secret("YOUR_ACCESS_TOKEN_SECRET")
+///     .api_key("YOUR_API_KEY")
+///     .api_secret_key("YOUR_API_SECRET_KEY")
+///     .build() // This can be called only after all values have been set.
+///     .await?;
+/// # Ok(())
+/// # }
+/// ```
+///
+/// [`TwitterAPI`]: struct.TwitterAPI.html
+/// [`build`]: struct.ClientBuilder.html#method.build
 #[derive(Debug, Default)]
 pub struct ClientBuilder<AccessTokenType, AccessTokenSecretType, ApiKeyType, ApiKeySecretType> {
     access_token: AccessTokenType,
@@ -12,6 +43,11 @@ pub struct ClientBuilder<AccessTokenType, AccessTokenSecretType, ApiKeyType, Api
 }
 
 impl ClientBuilder<(), (), (), ()> {
+    /// Creates a builder instance.
+    ///
+    /// This is exactly equivalent to [`TwitterAPI::builder`].
+    ///
+    /// [`TwitterAPI::builder`]: struct.TwitterAPI.html#method.builder
     pub fn new() -> Self {
         ClientBuilder {
             access_token: (),
@@ -23,6 +59,15 @@ impl ClientBuilder<(), (), (), ()> {
 }
 
 impl ClientBuilder<String, String, String, String> {
+    /// Builds a [`TwitterAPI`] instance with the values you've set.
+    ///
+    /// You can call this method only after the four required values have been set.
+    ///
+    /// # Error
+    ///
+    /// This method fails if there is an error when obtaining a bearer token.
+    ///
+    /// [`TwitterAPI`]: struct.TwitterAPI.html
     pub async fn build(self) -> Result<TwitterAPI> {
         let client = reqwest::Client::new();
         let bearer = self.get_bearer(&client).await?;
@@ -79,6 +124,7 @@ impl ClientBuilder<String, String, String, String> {
 impl<AccessTokenType, AccessTokenSecretType, ApiKeyType, ApiKeySecretType>
     ClientBuilder<AccessTokenType, AccessTokenSecretType, ApiKeyType, ApiKeySecretType>
 {
+    /// Sets the access token.
     pub fn access_token(
         self,
         access_token: impl Into<String>,
@@ -91,6 +137,7 @@ impl<AccessTokenType, AccessTokenSecretType, ApiKeyType, ApiKeySecretType>
         }
     }
 
+    /// Sets the access token secret.
     pub fn access_token_secret(
         self,
         access_token_secret: impl Into<String>,
@@ -103,6 +150,7 @@ impl<AccessTokenType, AccessTokenSecretType, ApiKeyType, ApiKeySecretType>
         }
     }
 
+    /// Sets the api key.
     pub fn api_key(
         self,
         api_key: impl Into<String>,
@@ -115,6 +163,7 @@ impl<AccessTokenType, AccessTokenSecretType, ApiKeyType, ApiKeySecretType>
         }
     }
 
+    /// Sets the api secret key.
     pub fn api_secret_key(
         self,
         api_secret_key: impl Into<String>,

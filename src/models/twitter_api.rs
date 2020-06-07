@@ -13,6 +13,12 @@ pub struct TwitterAPI {
 }
 
 impl TwitterAPI {
+    /// Creates [`ClientBuilder`] that helps construct a configured `TwitterAPI`.
+    ///
+    /// This is exactly equivalent to [`ClientBuilder::new`].
+    ///
+    /// [`ClientBuilder`]: struct.ClientBuilder.html
+    /// [`ClientBuilder::new`]: struct.ClientBuilder.html#method.new
     pub fn builder() -> ClientBuilder<(), (), (), ()> {
         ClientBuilder::new()
     }
