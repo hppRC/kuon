@@ -40,18 +40,25 @@ impl ClientBuilder<String, String, String, String> {
     async fn get_bearer(&self, client: &reqwest::Client) -> Result<BearerToken> {
         let endpoint = "https://api.twitter.com/oauth2/token";
         let headers = self.setup_header()?;
+        let bearer: BearerToken = Self::request_oauth(client, endpoint, headers).await?;
+        Ok(bearer)
+    }
 
+    async fn request_oauth(
+        client: &reqwest::Client,
+        endpoint: impl reqwest::IntoUrl,
+        header: HeaderMap<HeaderValue>,
+    ) -> Result<BearerToken> {
         // TODO: #8 better error handling
-        let text = client
+        let res = client
             .post(endpoint)
             .body("grant_type=client_credentials")
-            .headers(headers)
+            .headers(header)
             .send()
             .await?
             .text()
             .await?;
-
-        let bearer: BearerToken = serde_json::from_str(&text)?;
+        let bearer: BearerToken = serde_json::from_str(&res)?;
         Ok(bearer)
     }
 
@@ -123,9 +130,12 @@ impl<AccessTokenType, AccessTokenSecretType, ApiKeyType, ApiKeySecretType>
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+    use wiremock::matchers::{method, path};
+    use wiremock::{Mock, MockServer, ResponseTemplate};
+
     #[test]
     fn builder_method_chain() {
-        use super::*;
         let builder = ClientBuilder::new()
             .api_key("foo")
             .access_token_secret("bar")
@@ -138,5 +148,58 @@ mod tests {
         assert_eq!(builder.access_token_secret, "bar");
     }
 
-    // TODO: build test
+    #[test]
+    fn setup_header() {
+        let builder = ClientBuilder::new()
+            .api_key("foo")
+            .access_token_secret("bar")
+            .api_secret_key("baz")
+            .access_token("qux");
+
+        let expected = {
+            let mut h = HeaderMap::new();
+            h.insert(
+                AUTHORIZATION,
+                HeaderValue::from_static("Basic Zm9vOmJheg=="),
+            );
+            h.insert(
+                CONTENT_TYPE,
+                HeaderValue::from_static("application/x-www-form-urlencoded"),
+            );
+            h
+        };
+
+        assert_eq!(builder.setup_header().unwrap(), expected);
+    }
+
+    #[tokio::test]
+    async fn request_oauth() {
+        // arrange the behavior of the mock server
+        let mock_server = MockServer::start().await;
+        Mock::given(method("POST"))
+            .and(path("/"))
+            .respond_with(ResponseTemplate::new(200).set_body_json(serde_json::json!({
+                "access_token": "foo",
+                "token_type": "bar",
+            })))
+            .expect(1)
+            .mount(&mock_server)
+            .await;
+
+        // prepare for calling `ClientBuilder::request_oauth`
+        let client = reqwest::Client::new();
+        let uri = mock_server.uri();
+
+        let res = ClientBuilder::request_oauth(&client, &uri, HeaderMap::new())
+            .await
+            .unwrap();
+
+        assert_eq!(
+            res,
+            BearerToken {
+                access_token: "foo".to_string(),
+                token_type: "bar".to_string(),
+            }
+        );
+    }
 }
