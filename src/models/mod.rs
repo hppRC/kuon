@@ -1,5 +1,5 @@
 mod api_errors;
-mod bearer;
+pub(crate) mod bearer;
 mod result;
 mod tweet;
 mod twitter_api;
