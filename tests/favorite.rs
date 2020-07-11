@@ -8,7 +8,7 @@ async fn favorite() -> Result<()> {
     let tweet: kuon::Tweet = res.statuses[0].clone();
     assert!(tweet.text.len() > 0);
 
-    let res: kuon::FavoriteResult = api.favorite(&tweet.id_str).await?;
+    // let res: kuon::FavoriteResult = api.favorite(&tweet.id_str).await?;
 
     // assert_eq!(res.user, "");
     Ok(())

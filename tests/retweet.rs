@@ -8,7 +8,7 @@ async fn retweet() -> Result<()> {
     let tweet: kuon::Tweet = res.statuses[0].clone();
     assert!(tweet.text.len() > 0);
 
-    let res: kuon::RetweetResult = api.retweet(&tweet.id_str).await?;
+    // let res: kuon::RetweetResult = api.retweet(&tweet.id_str).await?;
 
     // assert_eq!(res.retweeted_status, "");
     Ok(())
