@@ -1,5 +1,7 @@
 use crate::client_builder::ClientBuilder;
 use crate::models::bearer::BearerToken;
+use anyhow::Context as _;
+use anyhow::Result;
 
 #[derive(Debug, Clone)]
 // TODO: #3 Thinking about naming, it might be better to use TwitterAPI
@@ -22,15 +24,36 @@ impl TwitterAPI {
     pub fn builder() -> ClientBuilder<(), (), (), ()> {
         ClientBuilder::new()
     }
+
+    pub async fn new_using_env() -> Result<Self> {
+        let access_token = &std::env::var("ACCESS_TOKEN")
+            .with_context(|| "Could not find ACCESS_TOKEN in your environment")?;
+        let access_token_secret = &std::env::var("ACCESS_TOKEN_SECRET")
+            .with_context(|| "Could not find ACCESS_TOKEN_SECRET in your environment")?;
+        let api_key = &std::env::var("API_KEY")
+            .with_context(|| "Could not find API_KEY in your environment")?;
+        let api_secret_key = &std::env::var("API_SECRET_KEY")
+            .with_context(|| "Could not find API_SECRET_KEY in your environment")?;
+
+        Self::builder()
+            .api_key(api_key)
+            .api_secret_key(api_secret_key)
+            .access_token(access_token)
+            .access_token_secret(access_token_secret)
+            .build()
+            .await
+    }
 }
 
 #[cfg(test)]
 mod test {
-    use super::*;
+    // use super::*;
     use anyhow::Result;
 
     #[tokio::test]
     async fn test() -> Result<()> {
+        // let api = crate::TwitterAPI::new_using_env().await?;
+
         Ok(())
     }
 }

@@ -3,12 +3,21 @@ use anyhow::Result;
 use std::collections::HashMap;
 
 impl TwitterAPI {
+    /// # Example
+    /// ```
+    /// # use anyhow::Result;
+    /// # async fn doc() -> Result<()> {
+    ///
+    /// let api = kuon::TwitterAPI::new_using_env().await?;
+    /// let res = api.tweet("これはてすとなんだなも").await?;
+    /// # Ok(())
+    /// # }
+    /// ```
     pub async fn tweet(&self, status: &str) -> Result<TweetResult> {
         let endpoint = "https://api.twitter.com/1.1/statuses/update.json";
         let params = maplit::hashmap! { "status" => status };
 
-        let retweet_results: TweetResult = self.post(endpoint, &params).await?;
-        Ok(retweet_results)
+        self.post(endpoint, &params).await
     }
 
     pub async fn tweet_with_params(
@@ -20,7 +29,6 @@ impl TwitterAPI {
         let mut params = params.clone();
         params.insert("status", status);
 
-        let retweet_results: TweetResult = self.post(endpoint, &params).await?;
-        Ok(retweet_results)
+        self.post(endpoint, &params).await
     }
 }

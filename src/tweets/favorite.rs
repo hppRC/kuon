@@ -6,7 +6,6 @@ impl TwitterAPI {
         let endpoint = "https://api.twitter.com/1.1/favorites/create.json";
         let params = maplit::hashmap! { "id" => id };
 
-        let favorite_results: FavoriteResult = self.post(endpoint, &params).await?;
-        Ok(favorite_results)
+        self.post(endpoint, &params).await
     }
 }
