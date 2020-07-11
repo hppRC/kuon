@@ -7,8 +7,13 @@ async fn test() -> Result<()> {
     let api_key = &std::env::var("API_KEY").unwrap();
     let api_secret_key = &std::env::var("API_SECRET_KEY").unwrap();
 
-    let api: kuon::TwitterAPI =
-        kuon::TwitterAPI::new(api_key, api_secret_key, access_token, access_token_secret).await?;
+    let builder = kuon::TwitterAPI::builder()
+        .access_token(access_token)
+        .access_token_secret(access_token_secret)
+        .api_key(api_key)
+        .api_secret_key(api_secret_key);
+
+    let api = builder.build().await?;
 
     let params = maplit::hashmap! { "count" => "15" };
 
