@@ -7,8 +7,7 @@ impl TwitterAPI {
         let endpoint = "https://api.twitter.com/1.1/search/tweets.json";
         let params = maplit::hashmap! { "q" => query };
 
-        let search_results: SearchResult = self.get(endpoint, &params).await?;
-        Ok(search_results)
+        self.get(endpoint, &params).await
     }
 
     pub async fn search_tweets_with_params(
@@ -20,8 +19,7 @@ impl TwitterAPI {
         let mut params = params.clone();
         params.insert("q", query);
 
-        let search_results: SearchResult = self.get(endpoint, &params).await?;
-        Ok(search_results)
+        self.get(endpoint, &params).await
     }
 }
 

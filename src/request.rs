@@ -42,7 +42,7 @@ impl TwitterAPI {
         let text: String = self
             .client
             .post(endpoint)
-            .query(params)
+            .query(&params)
             .headers(headers)
             .send()
             .await?
