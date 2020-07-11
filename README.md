@@ -1,3 +1,5 @@
+![kuon](.github/images/kuon.png)
+
 # Kuon
 
 Twitter Client Library written in Rust.
@@ -7,29 +9,28 @@ inspired by [anaconda](https://github.com/ChimeraCoder/anaconda)
 ## Example
 
 ```rust
-let api = kuon::TwitterAPI::new("api_key", "api_secret_key", "access_token", "access_token_secret").await?;
+let builder = kuon::TwitterAPI::builder()
+    .access_token("access_token")
+    .access_token_secret("access_token_secret")
+    .api_key("api_key")
+    .api_secret_key("api_secret_key");
+
+let api = builder.build().await?;
 
 let res = api.search_tweets("rust").await?;
 let res = api.favorite("tweet_id").await?;
 let res = api.retweet("tweet_id").await?;
 ```
 
-### Easy to use
-
-Full example.
+## Easy to use
 
 ```rust
-#[tokio::main]
-async fn main() -> anyhow::Result<()> {
-    // Please set API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET in environment
-    let api: kuon::TwitterAPI = kuon::TwitterAPI::new_using_env().await?;
-    let res: kuon::SearchResult = api.search_tweets("rust").await?;
+// Please set API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET in your environment
+let api = kuon::TwitterAPI::new_using_env().await?;
 
-    for tweet in res.statuses {
-        println!("{}", tweet.text);
-    }
-
-    Ok(())
+let res = api.search_tweets("rust").await?;
+for tweet in res.statuses {
+    println!("{}", tweet.text);
 }
 ```
 
@@ -37,9 +38,7 @@ async fn main() -> anyhow::Result<()> {
 ## Advanced Usage
 
 ```rust
-use std::collections::HashMap;
-
-let mut params = HashMap::new();
+let mut params = std::collections::HashMap::new();
 params.insert("count", "15");
 params.insert("from", "2020-04-01")
 
