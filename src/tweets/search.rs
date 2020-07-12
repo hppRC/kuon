@@ -1,4 +1,4 @@
-use crate::{SearchResult, TwitterAPI, PremiumSearchResult};
+use crate::{PremiumSearchResult, SearchResult, TwitterAPI};
 use anyhow::Result;
 use std::collections::HashMap;
 
@@ -27,7 +27,10 @@ impl TwitterAPI {
         params: &HashMap<&str, &str>,
         devenv_name: &str,
     ) -> Result<PremiumSearchResult> {
-        let endpoint = &format!("https://api.twitter.com/1.1/tweets/search/30day/{}.json", devenv_name);
+        let endpoint = &format!(
+            "https://api.twitter.com/1.1/tweets/search/30day/{}.json",
+            devenv_name
+        );
 
         self.get(endpoint, &params).await
     }
@@ -37,7 +40,10 @@ impl TwitterAPI {
         params: &HashMap<&str, &str>,
         devenv_name: &str,
     ) -> Result<PremiumSearchResult> {
-        let endpoint = &format!("https://api.twitter.com/1.1/tweets/search/fullarchive/{}.json", devenv_name);
+        let endpoint = &format!(
+            "https://api.twitter.com/1.1/tweets/search/fullarchive/{}.json",
+            devenv_name
+        );
 
         self.get(endpoint, &params).await
     }

@@ -1,7 +1,6 @@
 use anyhow::Result;
 use maplit::hashmap;
 
-
 #[tokio::main]
 async fn main() -> Result<()> {
     let api: kuon::TwitterAPI = kuon::TwitterAPI::new_using_env().await?;

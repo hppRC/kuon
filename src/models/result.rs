@@ -13,7 +13,6 @@ pub struct PremiumSearchResult {
     pub results: Vec<Tweet>,
 }
 
-
 #[derive(Deserialize, Debug, Clone)]
 pub struct FavoriteResult {
     pub user: Option<Value>,
