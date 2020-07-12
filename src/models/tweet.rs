@@ -9,7 +9,7 @@ pub struct Tweet {
     pub text: String,
     pub truncated: bool,
     pub entities: Box<TweetEntities>,
-    pub metadata: TweetMetadata,
+    pub metadata: Option<TweetMetadata>,
     pub source: String,
     pub user: Value, //TODO: implement correct type
 
