@@ -2,35 +2,35 @@ use crate::models::*;
 use serde_derive::*;
 use serde_json::Value;
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SearchResult {
     pub search_metadata: SearchMetadata,
     pub statuses: Vec<Tweet>,
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PremiumSearchResult {
     pub results: Vec<Tweet>,
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FavoriteResult {
     pub user: Option<Value>,
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RetweetResult {
     pub user: Value,
     pub retweeted_status: Value,
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TweetResult {
     pub created_at: Value,
     pub text: Value,
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SearchMetadata {
     pub completed_in: f64,
     pub count: u64,

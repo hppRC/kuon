@@ -6,7 +6,7 @@ async fn main() -> Result<()> {
     let api: kuon::TwitterAPI = kuon::TwitterAPI::new_using_env().await?;
     let res: kuon::TweetResult = api.tweet("example tweet").await?;
 
-    println!("{}", res.text);
+    println!("{}", serde_json::to_string(&res)?);
 
     Ok(())
 }
