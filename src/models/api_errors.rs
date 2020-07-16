@@ -1,11 +1,11 @@
 use serde_derive::*;
 
-#[derive(Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct APIError {
     errors: Vec<ErrorObject>,
 }
 
-#[derive(Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ErrorObject {
     code: i64,
     message: String,

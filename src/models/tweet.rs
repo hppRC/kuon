@@ -1,7 +1,7 @@
 use serde_derive::*;
 use serde_json::Value;
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Tweet {
     pub created_at: String,
     pub id: u64,
@@ -37,7 +37,7 @@ pub struct Tweet {
     pub lang: String,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TweetEntities {
     hashtags: Value,
     symbols: Value,
@@ -45,7 +45,7 @@ pub struct TweetEntities {
     urls: Vec<EntityUrls>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct EntityUrls {
     url: String,
     expanded_url: String,
@@ -53,7 +53,7 @@ pub struct EntityUrls {
     indices: Vec<u64>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TweetMetadata {
     iso_language_code: String,
     result_type: String,
