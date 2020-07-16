@@ -2,27 +2,57 @@
 ## [Unreleased]
 
 ### Add
+- :memo: easy examples
 - :memo: CHANGELOG
+- :sparkles: search function
+- :sparkles: faetures
+- :sparkles: constants
+- :sparkles: placeholders
+- :sparkles: property
+- :sparkles: models
+- :sparkles: struct for handling API requests
+- :sparkles: some basic types
+- :sparkles: examples
+- :sparkles: premium search API
+- :sparkles: tweet result
 - :sparkles: basic models
 - :sparkles: fav RT function
-- :sparkles: struct for handling API requests
-- :sparkles: placeholders
-- :sparkles: constants
-- :sparkles: models
-- :sparkles: search function
+- :sparkles: tweet function
+- :sparkles: Serialize
 - :up: dependencies
 - :up: dependencies
+- :white_check_mark: E2E tests
+- :white_check_mark: tests
+- :white_check_mark: CI
+- :white_check_mark: some tests
 
 ### Chagne
 - :up: package version
 
+### Change
+- :art: format
+- :white_check_mark: style
+
 ### Fix
 - :memo: typo
+- :shirt: lintation errors
+
+### Remove
+- :shower: unused dependencies
 
 ### Update
 - :memo: document
+- :memo: documents and add logo
 - :memo: document and add example(PoC)
+- :memo: document
+- :memo: document
+- :memo: example
 - :memo: crate description
+- :sparkles: struct definitions
+- :tada: version
+- :tada: crate version
+- :tada: version
+- :up: version
 - :up: version and CHANGELOG
 
 
