@@ -1,17 +1,18 @@
+use crate::models::*;
 use serde_derive::*;
 use serde_json::Value;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Tweet {
-    pub created_at: String,
+    pub created_at: Option<String>,
     pub id: u64,
-    pub id_str: String,
+    pub id_str: Option<String>,
     pub text: String,
     pub truncated: bool,
     pub entities: Box<TweetEntities>,
     pub metadata: Option<TweetMetadata>,
-    pub source: String,
-    pub user: Value, //TODO: implement correct type
+    pub source: Option<String>,
+    pub user: User,
 
     pub in_reply_to_status_id: Option<u64>,
     pub in_reply_to_status_id_str: Option<String>,
@@ -34,27 +35,11 @@ pub struct Tweet {
     pub favorited: bool,
     pub retweeted: bool,
     pub possibly_sensitive: Option<bool>,
-    pub lang: String,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct TweetEntities {
-    hashtags: Value,
-    symbols: Value,
-    user_mentions: Value,
-    urls: Vec<EntityUrls>,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct EntityUrls {
-    url: String,
-    expanded_url: String,
-    display_url: String,
-    indices: Vec<u64>,
+    pub lang: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TweetMetadata {
-    iso_language_code: String,
-    result_type: String,
+    iso_language_code: Option<String>,
+    result_type: Option<String>,
 }
