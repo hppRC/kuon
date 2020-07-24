@@ -12,7 +12,7 @@ keywords = []
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
-anyhow = "1.0.31"
+anyhow = "1.0.32"
 percent-encoding = "2.1.0"
 # TODO #1: use specific features
 tokio = { version = "0.2.21", features = ["full"] }
