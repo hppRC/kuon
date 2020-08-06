@@ -5,20 +5,21 @@
 - :memo: easy examples
 - :memo: CHANGELOG
 - :sparkles: search function
+- :sparkles: models
 - :sparkles: faetures
 - :sparkles: constants
 - :sparkles: placeholders
 - :sparkles: property
-- :sparkles: models
+- :sparkles: premium search API
 - :sparkles: struct for handling API requests
 - :sparkles: some basic types
 - :sparkles: examples
-- :sparkles: premium search API
+- :sparkles: Serialize
 - :sparkles: tweet result
 - :sparkles: basic models
 - :sparkles: fav RT function
 - :sparkles: tweet function
-- :sparkles: Serialize
+- :sparkles: `show status`
 - :up: dependencies
 - :up: dependencies
 - :white_check_mark: E2E tests
@@ -42,8 +43,8 @@
 
 ### Update
 - :memo: document
-- :memo: documents and add logo
 - :memo: document and add example(PoC)
+- :memo: documents and add logo
 - :memo: document
 - :memo: document
 - :memo: example
@@ -54,6 +55,7 @@
 - :tada: version
 - :up: version
 - :up: version and CHANGELOG
+- :up: package version
 
 
 <a name="v0.0.1"></a>
