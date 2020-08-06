@@ -15,7 +15,7 @@ keywords = []
 anyhow = "1.0.31"
 percent-encoding = "2.1.0"
 # TODO #1: use specific features
-tokio = { version = "0.2.21", features = ["full"] }
+tokio = { version = "0.2.22", features = ["full"] }
 reqwest = "0.10.6"
 thiserror = "1.0.19"
 maplit = "1.0.2"
