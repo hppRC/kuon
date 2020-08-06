@@ -1,4 +1,4 @@
-use crate::{TwitterAPI, FollowersIdsResult, FollowersListResult};
+use crate::{FollowersIdsResult, FollowersListResult, TwitterAPI};
 use anyhow::Result;
 use std::collections::HashMap;
 
