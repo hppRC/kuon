@@ -9,5 +9,6 @@ mod users;
 pub use client_builder::ClientBuilder;
 pub(crate) use constants::*;
 pub use models::*;
+pub use request::*;
 pub use tweets::*;
 pub use users::*;
