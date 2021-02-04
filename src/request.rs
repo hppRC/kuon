@@ -5,7 +5,7 @@ use serde::de::DeserializeOwned;
 use std::collections::HashMap;
 
 impl TwitterAPI {
-    pub async fn get<T>(&self, endpoint: &str, params: &HashMap<&str, &str>) -> Result<T>
+    pub async fn raw_get<T>(&self, endpoint: &str, params: &HashMap<&str, &str>) -> Result<T>
     where
         T: DeserializeOwned,
     {
@@ -29,7 +29,7 @@ impl TwitterAPI {
         Ok(result)
     }
 
-    pub async fn post<T>(&self, endpoint: &str, params: &HashMap<&str, &str>) -> Result<T>
+    pub async fn raw_post<T>(&self, endpoint: &str, params: &HashMap<&str, &str>) -> Result<T>
     where
         T: DeserializeOwned,
     {

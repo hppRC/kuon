@@ -17,7 +17,7 @@ impl TwitterAPI {
         let endpoint = "https://api.twitter.com/1.1/statuses/update.json";
         let params = maplit::hashmap! { "status" => status };
 
-        self.post(endpoint, &params).await
+        self.raw_post(endpoint, &params).await
     }
 
     pub async fn tweet_with_params(
@@ -29,6 +29,6 @@ impl TwitterAPI {
         let mut params = params.clone();
         params.insert("status", status);
 
-        self.post(endpoint, &params).await
+        self.raw_post(endpoint, &params).await
     }
 }
