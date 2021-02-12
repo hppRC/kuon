@@ -9,10 +9,32 @@ impl TwitterAPI {
         utf8_percent_encode(&target, &FRAGMENT)
     }
 
+    pub(crate) fn create_token(
+        &self,
+        endpoint: &str,
+        method: &str,
+        params: &HashMap<&str, &str>,
+        query: Option<&HashMap<&str, &str>>,
+    ) -> String {
+        let mut opts = params.clone();
+        if let Some(q) = query {
+            for (k, v) in q {
+                opts.insert(k, v);
+            }
+        }
+
+        let oauth_signature = self.create_oauth_signature(method, endpoint, &opts);
+        let mut opts = params.clone();
+        opts.insert("oauth_signature", &oauth_signature);
+        Self::create_oauth_header_string(&opts)
+    }
+
     pub(crate) fn create_oauth_header(
         &self,
         endpoint: &str,
+        method: &str,
         params: &HashMap<&str, &str>,
+        query: Option<&HashMap<&str, &str>>,
     ) -> String {
         let oauth_nonce: &str = &format!("nonce{}", Utc::now().timestamp());
         let oauth_signature_method: &str = "HMAC-SHA1";
@@ -32,18 +54,7 @@ impl TwitterAPI {
             map.insert(k, v);
         }
 
-        let oauth_signature: &str = &self.create_oauth_signature("POST", &endpoint, &map);
-
-        format!(
-            "OAuth oauth_consumer_key=\"{}\", oauth_nonce=\"{}\", oauth_signature=\"{}\", oauth_signature_method=\"{}\", oauth_timestamp=\"{}\", oauth_token=\"{}\", oauth_version=\"{}\"",
-            Self::encode(&self.api_key),
-            Self::encode(oauth_nonce),
-            Self::encode(oauth_signature),
-            Self::encode(oauth_signature_method),
-            Self::encode(oauth_timestamp),
-            Self::encode(&self.access_token),
-            Self::encode(oauth_version),
-        )
+        self.create_token(endpoint, method, &map, query)
     }
 
     pub(crate) fn create_oauth_signature(
@@ -76,5 +87,15 @@ impl TwitterAPI {
 
         let hash = hmacsha1::hmac_sha1(key.as_bytes(), data.as_bytes());
         base64::encode(&hash)
+    }
+
+    fn create_oauth_header_string(params: &HashMap<&str, &str>) -> String {
+        let param_string = params
+            .into_iter()
+            .map(|(k, v)| format!("{}=\"{}\"", k, Self::encode(v)))
+            .collect::<Vec<_>>()
+            .join(",");
+
+        format!("OAuth {}", param_string)
     }
 }
