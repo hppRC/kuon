@@ -1,7 +1,12 @@
-use crate::models::bearer::BearerToken;
-use crate::TwitterAPI;
-use anyhow::Result;
-use reqwest::header::{HeaderMap, HeaderValue, AUTHORIZATION, CONTENT_TYPE};
+use crate::{models::bearer::BearerToken, OAuthRequestToken};
+use crate::{OAuthToken, TwitterAPI};
+use anyhow::{Context, Result};
+use chrono::Utc;
+use maplit::hashmap;
+use reqwest::{
+    header::{HeaderMap, HeaderValue, AUTHORIZATION, CONTENT_TYPE},
+    Client, Method,
+};
 
 /// A `ClientBuilder` can help construct a [`TwitterAPI`] instance with your configuration.
 /// Before calling [`build`] method, you must set four values:
@@ -42,6 +47,20 @@ pub struct ClientBuilder<AccessTokenType, AccessTokenSecretType, ApiKeyType, Api
     api_secret_key: ApiKeySecretType,
 }
 
+pub enum Callback {
+    PIN,
+    URL(String),
+}
+
+impl Callback {
+    fn to_string(self) -> String {
+        match self {
+            Self::PIN => String::from("oob"),
+            Self::URL(url) => url,
+        }
+    }
+}
+
 impl ClientBuilder<(), (), (), ()> {
     /// Creates a builder instance.
     ///
@@ -55,6 +74,88 @@ impl ClientBuilder<(), (), (), ()> {
             api_key: (),
             api_secret_key: (),
         }
+    }
+}
+
+impl ClientBuilder<(), (), String, String> {
+    pub async fn pre_build(&self, callback: Callback) -> Result<OAuthRequestToken> {
+        let client = reqwest::Client::new();
+
+        let api = TwitterAPI {
+            access_token: String::new(),
+            access_token_secret: String::new(),
+            api_key: self.api_key.clone(),
+            api_secret_key: self.api_secret_key.clone(),
+            bearer: BearerToken {
+                access_token: String::new(),
+                token_type: String::new(),
+            },
+            client,
+        };
+
+        Self::request_oauth_token(&api, callback).await
+    }
+
+    pub async fn build(
+        self,
+        request_token: OAuthRequestToken,
+        verifier: &str,
+    ) -> Result<TwitterAPI> {
+        let client = reqwest::Client::new();
+        let bearer = self.get_bearer(&client).await?;
+
+        let OAuthToken { token, secret } =
+            Self::request_token(&client, request_token, verifier).await?;
+
+        Ok(TwitterAPI {
+            access_token: token,
+            access_token_secret: secret,
+            api_key: self.api_key,
+            api_secret_key: self.api_secret_key,
+            bearer,
+            client,
+        })
+    }
+
+    async fn request_oauth_token(
+        api: &TwitterAPI,
+        callback: Callback,
+    ) -> Result<OAuthRequestToken> {
+        let endpoint = "https://api.twitter.com/oauth/request_token";
+        let oauth_nonce: &str = &format!("nonce{}", Utc::now().timestamp());
+        let oauth_signature_method: &str = "HMAC-SHA1";
+        let oauth_timestamp: &str = &format!("{}", Utc::now().timestamp());
+        let oauth_version: &str = "1.0";
+        let oauth_callback = callback.to_string();
+
+        let map = hashmap! {
+            "oauth_nonce" => oauth_nonce,
+            "oauth_callback" => &oauth_callback,
+            "oauth_version" => oauth_version,
+            "oauth_timestamp" => oauth_timestamp,
+            "oauth_consumer_key" => &api.api_key,
+            "oauth_signature_method" => oauth_signature_method,
+        };
+
+        let res = api.request(endpoint, Method::POST, &map, None).await?;
+
+        OAuthRequestToken::from(&res).with_context(|| "Failed parse")
+    }
+
+    async fn request_token(
+        client: &Client,
+        request_token: OAuthRequestToken,
+        verifier: &str,
+    ) -> Result<OAuthToken> {
+        let url = "https://api.twitter.com/oauth/access_token";
+        let params = hashmap! {
+            "oauth_token" => request_token.token,
+            "oauth_verifier" => String::from(verifier)
+        };
+
+        let text = client.post(url).query(&params).send().await?.text().await?;
+
+        OAuthToken::from(&text).with_context(|| "Failed parse")
     }
 }
 
@@ -81,7 +182,11 @@ impl ClientBuilder<String, String, String, String> {
             client,
         })
     }
+}
 
+impl<AccessTokenType, AccessTokenSecretType>
+    ClientBuilder<AccessTokenType, AccessTokenSecretType, String, String>
+{
     async fn get_bearer(&self, client: &reqwest::Client) -> Result<BearerToken> {
         let endpoint = "https://api.twitter.com/oauth2/token";
         let headers = self.setup_header()?;
@@ -239,9 +344,10 @@ mod tests {
         let client = reqwest::Client::new();
         let uri = mock_server.uri();
 
-        let res = ClientBuilder::request_oauth(&client, &uri, HeaderMap::new())
-            .await
-            .unwrap();
+        let res =
+            ClientBuilder::<(), (), String, String>::request_oauth(&client, &uri, HeaderMap::new())
+                .await
+                .unwrap();
 
         assert_eq!(
             res,

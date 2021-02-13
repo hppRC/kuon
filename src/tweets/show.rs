@@ -9,6 +9,6 @@ impl TwitterAPI {
         let id_str: &str = &id.to_string();
         let params = hashmap! { "id" => id_str };
 
-        self.raw_get(endpoint, &params).await
+        self.raw_get(endpoint, &params, None).await
     }
 }
