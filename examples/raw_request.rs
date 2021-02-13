@@ -9,7 +9,7 @@ async fn main() -> Result<()> {
     let api: kuon::TwitterAPI = kuon::TwitterAPI::new_using_env().await?;
     let url = "https://api.twitter.com/1.1/account/update_profile.json";
     let res: HashMap<String, String> = api
-        .raw_post(url, &hashmap! { "name" => "new_user_name" })
+        .raw_post(url, &hashmap! { "name" => "new_user_name" }, None)
         .await?;
 
     println!("{:?}", res);

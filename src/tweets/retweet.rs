@@ -7,6 +7,7 @@ impl TwitterAPI {
         let endpoint = &format!("https://api.twitter.com/1.1/statuses/retweet/{}.json", id);
         let params = maplit::hashmap! {};
 
-        self.raw_post::<RetweetResult>(endpoint, &params).await
+        self.raw_post::<RetweetResult>(endpoint, &params, None)
+            .await
     }
 }
