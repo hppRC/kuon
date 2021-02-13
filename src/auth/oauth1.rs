@@ -70,7 +70,7 @@ impl TwitterAPI {
 
         // sort for oauth
         let mut params: Vec<(&str, &str)> = params.iter().map(|(&k, &v)| (k, v)).collect();
-        params.sort();
+        params.sort_unstable();
 
         let param = params
             .into_iter()
@@ -91,7 +91,7 @@ impl TwitterAPI {
 
     fn create_oauth_header_string(params: &HashMap<&str, &str>) -> String {
         let param_string = params
-            .into_iter()
+            .iter()
             .map(|(k, v)| format!("{}=\"{}\"", k, Self::encode(v)))
             .collect::<Vec<_>>()
             .join(",");

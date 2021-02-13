@@ -1,4 +1,3 @@
-use maplit::hashmap;
 use serde_derive::*;
 use std::collections::HashMap;
 
@@ -41,9 +40,9 @@ impl OAuthToken {
 }
 
 fn query_split(str: &str) -> Option<HashMap<&str, &str>> {
-    str.split("&")
+    str.split('&')
         .into_iter()
-        .map(|x| x.split("=").collect::<Vec<_>>())
+        .map(|x| x.split('=').collect::<Vec<_>>())
         .try_fold(HashMap::new(), |mut map, vec| {
             let k = vec.get(0)?;
             let v = vec.get(1)?;
@@ -54,8 +53,9 @@ fn query_split(str: &str) -> Option<HashMap<&str, &str>> {
 
 #[test]
 fn test_query_split() {
-    let query = "hoge=abc&huga=xyz";
+    use maplit::hashmap;
 
+    let query = "hoge=abc&huga=xyz";
     let map = query_split(query);
 
     if let Some(map) = map {
