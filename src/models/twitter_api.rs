@@ -1,5 +1,5 @@
-use crate::client_builder::ClientBuilder;
 use crate::models::bearer::BearerToken;
+use crate::{client_builder::ClientBuilder, OAuthToken};
 use anyhow::Context as _;
 use anyhow::Result;
 
@@ -42,6 +42,13 @@ impl TwitterAPI {
             .access_token_secret(access_token_secret)
             .build()
             .await
+    }
+
+    pub fn oauth_token(&self) -> OAuthToken {
+        OAuthToken {
+            token: self.api_key.clone(),
+            secret: self.api_secret_key.clone(),
+        }
     }
 }
 
