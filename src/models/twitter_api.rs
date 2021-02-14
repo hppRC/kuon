@@ -46,8 +46,8 @@ impl TwitterAPI {
 
     pub fn oauth_token(&self) -> OAuthToken {
         OAuthToken {
-            token: self.api_key.clone(),
-            secret: self.api_secret_key.clone(),
+            token: self.access_token.clone(),
+            secret: self.access_token_secret.clone(),
         }
     }
 }
