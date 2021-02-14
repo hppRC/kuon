@@ -1,6 +1,6 @@
 [package]
 name = "kuon"
-version = "0.0.13"
+version = "0.0.14"
 authors = ["hppRC <hpp.ricecake@gmail.com>"]
 edition = "2018"
 description = "Twitter Client Library written in Rust"
