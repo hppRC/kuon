@@ -34,6 +34,7 @@ pub struct Tweet {
     pub favorite_count: u64,
     pub favorited: bool,
     pub retweeted: bool,
+    pub retweeted_status: Option<Box<Tweet>>,
     pub possibly_sensitive: Option<bool>,
     pub lang: Option<String>,
 }
