@@ -3,27 +3,57 @@ use serde_json::Value;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TweetEntities {
-    hashtags: Value,
-    symbols: Value,
-    user_mentions: Value,
-    urls: Vec<UrlEntities>,
+    pub hashtags: Value,
+    pub symbols: Value,
+    pub user_mentions: Value,
+    pub media: Option<Vec<Media>>,
+    pub urls: Vec<UrlEntities>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct UrlEntities {
-    url: Option<String>,
-    expanded_url: Option<String>,
-    display_url: Option<String>,
-    indices: Vec<u64>,
+    pub url: Option<String>,
+    pub expanded_url: Option<String>,
+    pub display_url: Option<String>,
+    pub indices: Vec<u64>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct UserEntities {
-    url: Option<Url>,
-    description: Option<Url>,
+    pub url: Option<Url>,
+    pub description: Option<Url>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Url {
-    urls: Vec<UrlEntities>,
+    pub urls: Vec<UrlEntities>,
+}
+
+// Media Object
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Media {
+    pub display_url: String,
+    pub expanded_url: String,
+    pub id: u64,
+    pub id_str: String,
+    pub sizes: Sizes,
+    pub url: String,
+    pub media_url: String,
+    pub media_url_https: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Sizes {
+    pub thumb: Size,
+    pub large: Size,
+    pub medium: Size,
+    pub small: Size,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Size {
+    pub w: u32,
+    pub h: u32,
+    pub resize: String,
 }
