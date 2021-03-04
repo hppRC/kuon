@@ -3,9 +3,9 @@ use serde_json::Value;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TweetEntities {
-    pub hashtags: Value,
+    pub hashtags: Vec<HashTag>,
     pub symbols: Value,
-    pub user_mentions: Value,
+    pub user_mentions: Vec<UserMention>,
     pub media: Option<Vec<Media>>,
     pub urls: Vec<UrlEntities>,
 }
@@ -56,4 +56,24 @@ pub struct Size {
     pub w: u32,
     pub h: u32,
     pub resize: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct HashTag {
+    pub indices: Vec<u64>,
+    pub text: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct UserMention {
+    pub id: u64,
+    pub id_str: String,
+    pub indices: Vec<u64>,
+    pub name: String,
+    pub screen_name: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ExtendedEntities {
+    pub media: Vec<Media>,
 }
