@@ -10,7 +10,7 @@ pub struct Tweet {
     pub text: String,
     pub truncated: bool,
     pub entities: TweetEntities,
-    pub extended_entities: ExtendedEntities,
+    pub extended_entities: Option<ExtendedEntities>,
     pub metadata: Option<TweetMetadata>,
     pub source: Option<String>,
     pub user: User,

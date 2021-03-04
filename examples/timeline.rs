@@ -12,7 +12,7 @@ async fn main() -> Result<()> {
     for tweet in res {
         println!("{}", tweet.text);
         // show original quolity images' url
-        for media in tweet.extended_entities.media {
+        for media in tweet.extended_entities.unwrap().media {
             println!("{}:orig", media.media_url_https)
         }
     }
