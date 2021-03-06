@@ -3,13 +3,12 @@ use anyhow::Result;
 #[tokio::test]
 async fn retweet() -> Result<()> {
     let api: kuon::TwitterAPI = kuon::TwitterAPI::new_using_env().await?;
+    let res = api.retweet("00000000000000").await;
+    assert!(res.is_err());
+    if let Err(kuon::Error::TwitterAPIError(err)) = res {
+        println!("{:?}", err);
+        assert!(err.errors.len() > 0);
+    };
 
-    let res: kuon::SearchResult = api.search_tweets("にじさんじ").await?;
-    let tweet: kuon::Tweet = res.statuses[0].clone();
-    assert!(tweet.text.len() > 0);
-
-    // let res: kuon::RetweetResult = api.retweet(&tweet.id_str).await?;
-
-    // assert_eq!(res.retweeted_status, "");
     Ok(())
 }

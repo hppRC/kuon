@@ -14,16 +14,8 @@ impl TwitterAPI {
         endpoint: &str,
         method: &str,
         params: &HashMap<&str, &str>,
-        query: Option<&HashMap<&str, &str>>,
     ) -> String {
-        let mut opts = params.clone();
-        if let Some(q) = query {
-            for (k, v) in q {
-                opts.insert(k, v);
-            }
-        }
-
-        let oauth_signature = self.create_oauth_signature(method, endpoint, &opts);
+        let oauth_signature = self.create_oauth_signature(method, endpoint, &params);
         let mut opts = params.clone();
         opts.insert("oauth_signature", &oauth_signature);
         Self::create_oauth_header_string(&opts)
@@ -34,7 +26,6 @@ impl TwitterAPI {
         endpoint: &str,
         method: &str,
         params: &HashMap<&str, &str>,
-        query: Option<&HashMap<&str, &str>>,
     ) -> String {
         let oauth_nonce: &str = &format!("nonce{}", Utc::now().timestamp());
         let oauth_signature_method: &str = "HMAC-SHA1";
@@ -54,7 +45,7 @@ impl TwitterAPI {
             map.insert(k, v);
         }
 
-        self.create_token(endpoint, method, &map, query)
+        self.create_token(endpoint, method, &map)
     }
 
     pub(crate) fn create_oauth_signature(
