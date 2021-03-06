@@ -51,6 +51,7 @@ fn query_split(str: &str) -> Option<HashMap<&str, &str>> {
         })
 }
 
+#[cfg(test)]
 #[test]
 fn test_query_split() {
     use maplit::hashmap;

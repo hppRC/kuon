@@ -1,4 +1,4 @@
-mod api_errors;
+// mod api_errors;
 pub(crate) mod bearer;
 mod entity;
 mod oauth;
@@ -8,7 +8,7 @@ mod twitter_api;
 mod user;
 mod users;
 
-pub use api_errors::*;
+// pub use api_errors::*;
 pub use bearer::*;
 pub use entity::*;
 pub use oauth::*;

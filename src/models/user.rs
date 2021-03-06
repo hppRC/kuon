@@ -12,7 +12,6 @@ pub struct User {
     pub name: String,
     pub screen_name: String,
     pub location: Option<String>,
-    pub derived: Option<Vec<Value>>,
     pub url: Option<String>,
     pub description: Option<String>,
     pub protected: bool,
@@ -29,6 +28,9 @@ pub struct User {
     pub default_profile: bool,
     pub default_profile_image: bool,
     pub entities: Option<UserEntities>,
+
+    // Enterprise only
+    pub derived: Option<Vec<Value>>,
 
     // No longer supported (deprecated) attributes
     utc_offset: Option<Value>,
