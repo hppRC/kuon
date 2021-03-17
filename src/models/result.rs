@@ -27,6 +27,7 @@ pub struct RetweetResult {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TweetResult {
     pub created_at: Value,
+    pub id: u64,
     pub text: Value,
 }
 
