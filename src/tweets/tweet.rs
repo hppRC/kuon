@@ -1,4 +1,4 @@
-use crate::{TweetResult, TwitterAPI};
+use crate::{Error, TweetResult, TwitterAPI};
 use anyhow::Result;
 use std::collections::HashMap;
 
@@ -9,26 +9,26 @@ impl TwitterAPI {
     /// # async fn doc() -> Result<()> {
     ///
     /// let api = kuon::TwitterAPI::new_using_env().await?;
-    /// let res = api.tweet("これはてすとなんだなも").await?;
+    /// let res = api.tweet("this is test tweet from kuon.").await?;
     /// # Ok(())
     /// # }
     /// ```
-    pub async fn tweet(&self, status: &str) -> Result<TweetResult> {
+    pub async fn tweet(&self, status: &str) -> Result<TweetResult, Error> {
         let endpoint = "https://api.twitter.com/1.1/statuses/update.json";
         let params = maplit::hashmap! { "status" => status };
 
-        self.raw_post(endpoint, &params, None).await
+        self.raw_post(endpoint, &params).await
     }
 
     pub async fn tweet_with_params(
         &self,
         status: &str,
         params: &HashMap<&str, &str>,
-    ) -> Result<TweetResult> {
+    ) -> Result<TweetResult, Error> {
         let endpoint = "https://api.twitter.com/1.1/statuses/update.json";
         let mut params = params.clone();
         params.insert("status", status);
 
-        self.raw_post(endpoint, &params, None).await
+        self.raw_post(endpoint, &params).await
     }
 }

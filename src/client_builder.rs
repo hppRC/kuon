@@ -128,7 +128,7 @@ impl ClientBuilder<(), (), String, String> {
         let oauth_version: &str = "1.0";
         let oauth_callback = callback.to_string();
 
-        let map = hashmap! {
+        let params = hashmap! {
             "oauth_nonce" => oauth_nonce,
             "oauth_callback" => &oauth_callback,
             "oauth_version" => oauth_version,
@@ -137,7 +137,7 @@ impl ClientBuilder<(), (), String, String> {
             "oauth_signature_method" => oauth_signature_method,
         };
 
-        let res = api.request(endpoint, Method::POST, &map, None).await?;
+        let res = api.request(endpoint, Method::POST, &params).await?;
 
         OAuthRequestToken::from(&res).with_context(|| "Failed parse")
     }

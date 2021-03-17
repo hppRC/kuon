@@ -1,15 +1,21 @@
-use crate::{FollowersIdsResult, FollowersListResult, TwitterAPI};
+use crate::{Error, FollowersIdsResult, FollowersListResult, TwitterAPI};
 use anyhow::Result;
 use std::collections::HashMap;
 
 impl TwitterAPI {
-    pub async fn follwers_ids(&self, params: &HashMap<&str, &str>) -> Result<FollowersIdsResult> {
+    pub async fn follwers_ids(
+        &self,
+        params: &HashMap<&str, &str>,
+    ) -> Result<FollowersIdsResult, Error> {
         let endpoint = "https://api.twitter.com/1.1/followers/ids.json";
-        self.raw_get(endpoint, &params, None).await
+        self.raw_get(endpoint, &params).await
     }
 
-    pub async fn follwers_list(&self, params: &HashMap<&str, &str>) -> Result<FollowersListResult> {
+    pub async fn follwers_list(
+        &self,
+        params: &HashMap<&str, &str>,
+    ) -> Result<FollowersListResult, Error> {
         let endpoint = "https://api.twitter.com/1.1/followers/list.json";
-        self.raw_get(endpoint, &params, None).await
+        self.raw_get(endpoint, &params).await
     }
 }
