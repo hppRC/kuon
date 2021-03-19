@@ -12,9 +12,13 @@ impl TwitterAPI {
         &self,
         endpoint: &str,
         method: reqwest::Method,
-        params: &HashMap<&str, &str>,
+        params: &HashMap<&str, String>,
     ) -> Result<String, Error> {
-        let token = self.create_oauth_header(endpoint, &method.to_string(), params);
+        let mut params_ref: HashMap<&str, &str> = maplit::hashmap! {};
+        for (&k, v) in params {
+            params_ref.insert(k, v);
+        }
+        let token = self.create_oauth_header(endpoint, &method.to_string(), &params_ref);
         let parsed_token = token
             .parse::<HeaderValue>()
             .map_err(|source| Error::Error(source.into()))?;
@@ -24,7 +28,7 @@ impl TwitterAPI {
 
         self.client
             .request(method, endpoint)
-            .query(&params)
+            .query(&params_ref)
             .headers(headers)
             .send()
             .await
@@ -36,7 +40,11 @@ impl TwitterAPI {
             .map_err(|source| Error::Error(source.into()))
     }
 
-    pub async fn raw_get<T>(&self, endpoint: &str, params: &HashMap<&str, &str>) -> Result<T, Error>
+    pub async fn raw_get<T>(
+        &self,
+        endpoint: &str,
+        params: &HashMap<&str, String>,
+    ) -> Result<T, Error>
     where
         T: DeserializeOwned,
     {
@@ -53,7 +61,7 @@ impl TwitterAPI {
     pub async fn raw_post<T>(
         &self,
         endpoint: &str,
-        params: &HashMap<&str, &str>,
+        params: &HashMap<&str, String>,
     ) -> Result<T, Error>
     where
         T: DeserializeOwned,
