@@ -1,7 +1,6 @@
 use crate::{Error, SearchResult, TwitterAPI};
 use anyhow::Result;
 use maplit::hashmap;
-use std::collections::HashMap;
 
 #[derive(Clone, Debug)]
 pub struct SearchTweetsRequest<'a, Q> {
@@ -28,8 +27,8 @@ pub struct SearchTweetsRequestOptionalParams {
 }
 
 impl TwitterAPI {
-    pub fn search_tweets(&self) -> &mut SearchTweetsRequest<()> {
-        &mut SearchTweetsRequest {
+    pub fn search_tweets(&self) -> SearchTweetsRequest<()> {
+        SearchTweetsRequest {
             api: self,
             required_params: Default::default(),
             optional_params: Default::default(),
@@ -38,14 +37,14 @@ impl TwitterAPI {
 }
 
 impl<'a> SearchTweetsRequest<'a, ()> {
-    pub fn q<Q>(&self, q: Q) -> &mut SearchTweetsRequest<'a, Q>
+    pub fn q<Q>(&self, q: Q) -> SearchTweetsRequest<'a, Q>
     where
         Q: ToString,
     {
-        &mut SearchTweetsRequest {
+        SearchTweetsRequest {
             api: self.api,
             required_params: SearchTweetsRequestRequiredParams { q },
-            optional_params: self.optional_params,
+            optional_params: self.optional_params.clone(),
         }
     }
 }
@@ -88,19 +87,13 @@ impl<'a, Q> SearchTweetsRequest<'a, Q> {
     }
 }
 
-fn insert_if_some(&mut params: &mut HashMap<&str, String>, value: &Option<impl ToString>) {
-    if let Some(v) = value.clone() {
-        params.insert("locale", v.to_string());
-    }
-}
-
 impl<'a, Q> SearchTweetsRequest<'a, Q>
 where
     Q: ToString,
 {
     pub async fn send(&self) -> Result<SearchResult, Error> {
         let endpoint = "https://api.twitter.com/1.1/search/tweets.json";
-        let mut params: HashMap<&str, String> = hashmap! {"q" => self.q.to_string()};
+        let mut params = hashmap! {"q" => self.required_params.q.to_string()};
 
         if let Some(lang) = self.optional_params.lang.clone() {
             params.insert("lang", lang.to_string());
@@ -128,17 +121,5 @@ where
         }
 
         self.api.raw_get(endpoint, &params).await
-    }
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[tokio::test]
-    async fn test() -> Result<()> {
-        let api: TwitterAPI = TwitterAPI::new_using_env().await?;
-        let res = api.search_tweets().q("q").count(10).send().await?;
-        Ok(())
     }
 }

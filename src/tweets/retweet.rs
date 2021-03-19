@@ -3,11 +3,19 @@ use std::{collections::HashMap, fmt::Display};
 use crate::{Error, Tweet, TwitterAPI};
 use anyhow::Result;
 use maplit::hashmap;
-
 #[derive(Clone, Debug)]
 pub struct RetweetRequest<'a, Id> {
     api: &'a TwitterAPI,
+    required_params: RetweetRequestRequiredParams<Id>,
+    optional_params: RetweetRequestOptionalParams,
+}
+
+#[derive(Clone, Debug, Default)]
+pub struct RetweetRequestRequiredParams<Id> {
     id: Id,
+}
+#[derive(Clone, Debug, Default)]
+pub struct RetweetRequestOptionalParams {
     trim_user: Option<bool>,
 }
 
@@ -15,8 +23,8 @@ impl TwitterAPI {
     pub fn retweet(&self) -> RetweetRequest<()> {
         RetweetRequest {
             api: self,
-            id: (),
-            trim_user: None,
+            required_params: Default::default(),
+            optional_params: Default::default(),
         }
     }
 }
@@ -28,19 +36,16 @@ impl<'a> RetweetRequest<'a, ()> {
     {
         RetweetRequest {
             api: self.api,
-            id,
-            trim_user: self.trim_user,
+            required_params: RetweetRequestRequiredParams { id },
+            optional_params: self.optional_params.clone(),
         }
     }
 }
 
 impl<'a, Id> RetweetRequest<'a, Id> {
-    pub fn trim_user(&self, trim_user: bool) -> RetweetRequest<'a, Id> {
-        RetweetRequest {
-            api: self.api,
-            id: self.id,
-            trim_user: Some(trim_user),
-        }
+    pub fn trim_user(&mut self, trim_user: bool) -> &mut Self {
+        self.optional_params.trim_user = Some(trim_user);
+        self
     }
 }
 
@@ -51,25 +56,13 @@ where
     pub async fn send(&self) -> Result<Tweet, Error> {
         let endpoint = &format!(
             "https://api.twitter.com/1.1/statuses/retweet/{}.json",
-            self.id
+            self.required_params.id
         );
         let mut params: HashMap<&str, String> = hashmap! {};
-        if let Some(trim_user) = self.trim_user {
+        if let Some(trim_user) = self.optional_params.trim_user {
             params.insert("trim_user", trim_user.to_string());
         }
 
         self.api.raw_post(endpoint, &params).await
-    }
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[tokio::test]
-    async fn test() -> Result<()> {
-        let api: TwitterAPI = TwitterAPI::new_using_env().await?;
-        let res = api.retweet().id(1).send().await?;
-        Ok(())
     }
 }

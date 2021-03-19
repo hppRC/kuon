@@ -15,12 +15,12 @@ pub struct PremiumSearchResult {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FavoriteResult {
-    pub user: Option<Value>,
+    pub user: User,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RetweetResult {
-    pub user: Value,
+    pub user: User,
     pub retweeted_status: Value,
 }
 
