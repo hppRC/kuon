@@ -1,4 +1,4 @@
-use crate::{Error, Tweet, TwitterAPI};
+use crate::{Error, TrimTweet, TwitterAPI};
 use anyhow::Result;
 use maplit::hashmap;
 
@@ -55,7 +55,7 @@ impl<'a> HomeTimelineRequest<'a> {
 }
 
 impl<'a> HomeTimelineRequest<'a> {
-    pub async fn send(&self) -> Result<Tweet, Error> {
+    pub async fn send(&self) -> Result<Vec<TrimTweet>, Error> {
         let endpoint = "https://api.twitter.com/1.1/statuses/home_timeline.json";
         let mut params = hashmap! {};
 
@@ -78,6 +78,6 @@ impl<'a> HomeTimelineRequest<'a> {
             params.insert("include_entities", include_entities.to_string());
         }
 
-        self.api.raw_post(endpoint, &params).await
+        self.api.raw_get(endpoint, &params).await
     }
 }

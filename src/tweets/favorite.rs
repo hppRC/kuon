@@ -1,7 +1,7 @@
-use crate::{Error, FavoriteResult, TwitterAPI};
+use crate::{Error, Tweet, TwitterAPI};
 use anyhow::Result;
-
 use maplit::hashmap;
+
 #[derive(Clone, Debug)]
 pub struct FavoriteRequest<'a, Id> {
     api: &'a TwitterAPI,
@@ -52,7 +52,7 @@ impl<'a, Id> FavoriteRequest<'a, Id>
 where
     Id: ToString,
 {
-    pub async fn send(&self) -> Result<FavoriteResult, Error> {
+    pub async fn send(&self) -> Result<Tweet, Error> {
         let endpoint = "https://api.twitter.com/1.1/favorites/create.json";
         let mut params = hashmap! {"id" => self.required_params.id.to_string()};
         if let Some(include_entities) = self.optional_params.include_entities {

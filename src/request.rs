@@ -5,6 +5,7 @@ use reqwest::{
     Method,
 };
 use serde::de::DeserializeOwned;
+use serde_json::Value;
 use std::collections::HashMap;
 
 impl TwitterAPI {
@@ -50,10 +51,13 @@ impl TwitterAPI {
     {
         let text = self.request(endpoint, Method::GET, params).await?;
 
-        serde_json::from_str::<T>(&text).or_else(|_| {
+        serde_json::from_str::<T>(&text).or_else(|e| {
             match serde_json::from_str::<TwitterAPIErrorMessage>(&text) {
-                Ok(v) => Err(Error::TwitterAPIError(v)),
-                Err(e) => Err(Error::JsonParsingError(e.into())),
+                Ok(v) => Err(Error::TwitterAPIError(v, format!("{:?}", params))),
+                Err(_) => Err(Error::JsonParsingError(
+                    e.into(),
+                    serde_json::from_str::<Value>(&text).unwrap(),
+                )),
             }
         })
     }
@@ -67,10 +71,13 @@ impl TwitterAPI {
         T: DeserializeOwned,
     {
         let text = self.request(endpoint, Method::POST, params).await?;
-        serde_json::from_str::<T>(&text).or_else(|_| {
+        serde_json::from_str::<T>(&text).or_else(|e| {
             match serde_json::from_str::<TwitterAPIErrorMessage>(&text) {
-                Ok(v) => Err(Error::TwitterAPIError(v)),
-                Err(e) => Err(Error::JsonParsingError(e.into())),
+                Ok(v) => Err(Error::TwitterAPIError(v, format!("{:?}", params))),
+                Err(_) => Err(Error::JsonParsingError(
+                    e.into(),
+                    serde_json::from_str::<Value>(&text).unwrap(),
+                )),
             }
         })
     }

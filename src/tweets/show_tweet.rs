@@ -1,8 +1,7 @@
-use std::fmt::Display;
-
-use crate::{Error, Tweet, TwitterAPI};
+use crate::{Error, TrimTweet, TwitterAPI};
 use anyhow::Result;
 use maplit::hashmap;
+use std::fmt::Display;
 
 #[derive(Clone, Debug)]
 pub struct ShowTweetRequest<'a, Id> {
@@ -74,7 +73,7 @@ impl<'a, Id> ShowTweetRequest<'a, Id>
 where
     Id: Display,
 {
-    pub async fn send(&self) -> Result<Tweet, Error> {
+    pub async fn send(&self) -> Result<TrimTweet, Error> {
         let endpoint = "https://api.twitter.com/1.1/statuses/show.json";
         let mut params = hashmap! {"id" => self.required_params.id.to_string()};
 

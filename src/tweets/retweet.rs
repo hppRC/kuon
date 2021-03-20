@@ -1,8 +1,8 @@
-use std::{collections::HashMap, fmt::Display};
-
-use crate::{Error, Tweet, TwitterAPI};
+use crate::{Error, TrimTweet, TwitterAPI};
 use anyhow::Result;
 use maplit::hashmap;
+use std::{collections::HashMap, fmt::Display};
+
 #[derive(Clone, Debug)]
 pub struct RetweetRequest<'a, Id> {
     api: &'a TwitterAPI,
@@ -53,7 +53,8 @@ impl<'a, Id> RetweetRequest<'a, Id>
 where
     Id: Display,
 {
-    pub async fn send(&self) -> Result<Tweet, Error> {
+    // pub async fn send(&self) -> Result<RetweetResult, Error> {
+    pub async fn send(&self) -> Result<TrimTweet, Error> {
         let endpoint = &format!(
             "https://api.twitter.com/1.1/statuses/retweet/{}.json",
             self.required_params.id

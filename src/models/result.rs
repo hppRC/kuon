@@ -1,6 +1,5 @@
 use crate::models::*;
 use serde_derive::*;
-use serde_json::Value;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SearchResult {

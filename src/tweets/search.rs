@@ -54,6 +54,10 @@ impl<'a, Q> SearchTweetsRequest<'a, Q> {
         self.optional_params.geocode = Some(geocode.into());
         self
     }
+    pub fn lang(&mut self, lang: impl Into<String>) -> &mut SearchTweetsRequest<'a, Q> {
+        self.optional_params.lang = Some(lang.into());
+        self
+    }
     pub fn locale(&mut self, locale: impl Into<String>) -> &mut SearchTweetsRequest<'a, Q> {
         self.optional_params.locale = Some(locale.into());
         self

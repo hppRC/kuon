@@ -1,4 +1,4 @@
-use crate::{Error, Tweet, TwitterAPI};
+use crate::{Error, TrimTweet, TwitterAPI};
 use anyhow::Result;
 use maplit::hashmap;
 
@@ -80,44 +80,60 @@ impl<'a, Status> TweetRequest<'a, Status> {
         self.optional_params.exclude_reply_user_ids = Some(exclude_reply_user_ids);
         self
     }
-    pub fn attachment_url(&mut self, attachment_url: String) -> &mut Self {
-        self.optional_params.attachment_url = Some(attachment_url);
+    pub fn exclude_reply_user_id(&mut self, exclude_reply_user_id: u64) -> &mut Self {
+        if let Some(ref mut exclude_reply_user_ids) = self.optional_params.exclude_reply_user_ids {
+            exclude_reply_user_ids.push(exclude_reply_user_id)
+        } else {
+            self.optional_params.exclude_reply_user_ids = Some(vec![exclude_reply_user_id]);
+        }
+        self
+    }
+    pub fn attachment_url(&mut self, attachment_url: impl Into<String>) -> &mut Self {
+        self.optional_params.attachment_url = Some(attachment_url.into());
         self
     }
     pub fn media_ids(&mut self, media_ids: Vec<u64>) -> &mut Self {
         self.optional_params.media_ids = Some(media_ids);
         self
     }
-    pub fn possibly_sensitive(&mut self, possibly_sensitive: bool) -> &mut Self {
-        self.optional_params.possibly_sensitive = Some(possibly_sensitive);
+    pub fn media_id(&mut self, media_id: u64) -> &mut Self {
+        if let Some(ref mut media_ids) = self.optional_params.media_ids {
+            media_ids.push(media_id)
+        } else {
+            self.optional_params.media_ids = Some(vec![media_id]);
+        }
         self
     }
-    pub fn lat(&mut self, lat: f64) -> &mut Self {
-        self.optional_params.lat = Some(lat);
+    pub fn possibly_sensitive(&mut self, possibly_sensitive: impl Into<bool>) -> &mut Self {
+        self.optional_params.possibly_sensitive = Some(possibly_sensitive.into());
         self
     }
-    pub fn long(&mut self, long: f64) -> &mut Self {
-        self.optional_params.long = Some(long);
+    pub fn lat(&mut self, lat: impl Into<f64>) -> &mut Self {
+        self.optional_params.lat = Some(lat.into());
+        self
+    }
+    pub fn long(&mut self, long: impl Into<f64>) -> &mut Self {
+        self.optional_params.long = Some(long.into());
         self
     }
     pub fn place_id(&mut self, place_id: impl Into<String>) -> &mut Self {
         self.optional_params.place_id = Some(place_id.into());
         self
     }
-    pub fn display_coordinates(&mut self, display_coordinates: bool) -> &mut Self {
-        self.optional_params.display_coordinates = Some(display_coordinates);
+    pub fn display_coordinates(&mut self, display_coordinates: impl Into<bool>) -> &mut Self {
+        self.optional_params.display_coordinates = Some(display_coordinates.into());
         self
     }
-    pub fn trim_user(&mut self, trim_user: bool) -> &mut Self {
-        self.optional_params.trim_user = Some(trim_user);
+    pub fn trim_user(&mut self, trim_user: impl Into<bool>) -> &mut Self {
+        self.optional_params.trim_user = Some(trim_user.into());
         self
     }
-    pub fn enable_dmcommands(&mut self, enable_dmcommands: bool) -> &mut Self {
-        self.optional_params.enable_dmcommands = Some(enable_dmcommands);
+    pub fn enable_dmcommands(&mut self, enable_dmcommands: impl Into<bool>) -> &mut Self {
+        self.optional_params.enable_dmcommands = Some(enable_dmcommands.into());
         self
     }
-    pub fn fail_dmcommands(&mut self, fail_dmcommands: bool) -> &mut Self {
-        self.optional_params.fail_dmcommands = Some(fail_dmcommands);
+    pub fn fail_dmcommands(&mut self, fail_dmcommands: impl Into<bool>) -> &mut Self {
+        self.optional_params.fail_dmcommands = Some(fail_dmcommands.into());
         self
     }
     pub fn card_uri(&mut self, card_uri: impl Into<String>) -> &mut Self {
@@ -130,7 +146,7 @@ impl<'a, Status> TweetRequest<'a, Status>
 where
     Status: ToString,
 {
-    pub async fn send(&self) -> Result<Tweet, Error> {
+    pub async fn send(&self) -> Result<TrimTweet, Error> {
         let endpoint = "https://api.twitter.com/1.1/statuses/update.json";
         let mut params = hashmap! {"status" => self.required_params.status.to_string()};
 
