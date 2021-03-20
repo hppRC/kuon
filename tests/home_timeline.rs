@@ -20,8 +20,5 @@ async fn home_timeline() -> Result<()> {
         _ => panic!("panic with favorite test"),
     }
 
-    let res = api.home_timeline().count(5).send().await?;
-    assert!(res.len() > 0);
-
     Ok(())
 }
