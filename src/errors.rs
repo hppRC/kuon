@@ -1,5 +1,4 @@
 use serde_derive::*;
-use serde_json::Value;
 use std::fmt::Display;
 use thiserror::Error;
 
@@ -7,8 +6,8 @@ use thiserror::Error;
 pub enum Error {
     #[error("Twitter API error!\n{0}params:\n{1}")]
     TwitterAPIError(TwitterAPIErrorMessage, String),
-    #[error("Invalid json format.\n{0}\n{1}")]
-    JsonParsingError(anyhow::Error, Value),
+    #[error("\n{1}\nInvalid json format.\n{0}")]
+    JsonParsingError(anyhow::Error, String),
     #[error(transparent)]
     HTTPRequestError(reqwest::Error),
     /// Represents all other cases of `std::io::Error`.

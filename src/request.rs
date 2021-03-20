@@ -5,7 +5,6 @@ use reqwest::{
     Method,
 };
 use serde::de::DeserializeOwned;
-use serde_json::Value;
 use std::collections::HashMap;
 
 impl TwitterAPI {
@@ -54,10 +53,7 @@ impl TwitterAPI {
         serde_json::from_str::<T>(&text).or_else(|e| {
             match serde_json::from_str::<TwitterAPIErrorMessage>(&text) {
                 Ok(v) => Err(Error::TwitterAPIError(v, format!("{:?}", params))),
-                Err(_) => Err(Error::JsonParsingError(
-                    e.into(),
-                    serde_json::from_str::<Value>(&text).unwrap(),
-                )),
+                Err(_) => Err(Error::JsonParsingError(e.into(), text)),
             }
         })
     }
@@ -74,10 +70,7 @@ impl TwitterAPI {
         serde_json::from_str::<T>(&text).or_else(|e| {
             match serde_json::from_str::<TwitterAPIErrorMessage>(&text) {
                 Ok(v) => Err(Error::TwitterAPIError(v, format!("{:?}", params))),
-                Err(_) => Err(Error::JsonParsingError(
-                    e.into(),
-                    serde_json::from_str::<Value>(&text).unwrap(),
-                )),
+                Err(_) => Err(Error::JsonParsingError(e.into(), text)),
             }
         })
     }

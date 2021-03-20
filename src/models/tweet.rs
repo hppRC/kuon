@@ -21,9 +21,9 @@ pub struct Tweet {
     pub in_reply_to_user_id_str: Option<String>,
     pub in_reply_to_screen_name: Option<String>,
 
-    pub geo: Option<String>,
+    pub geo: Option<Value>,
     pub coordinates: Option<Value>, //TODO: implement correct type
-    pub place: Option<String>,
+    pub place: Option<Value>,
     pub contributors: Option<Value>, //TODO: implement correct type
     pub is_quote_status: bool,
     pub quoted_status_id: Option<u64>,
@@ -79,7 +79,7 @@ pub struct TrimTweet {
     pub favorite_count: u64,
     pub favorited: bool,
     pub retweeted: bool,
-    pub retweeted_status: Option<Box<Tweet>>,
+    pub retweeted_status: Option<Box<TrimTweet>>,
     pub possibly_sensitive: Option<bool>,
     pub lang: Option<String>,
 }

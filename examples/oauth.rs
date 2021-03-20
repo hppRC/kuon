@@ -25,7 +25,7 @@ async fn main() -> Result<()> {
     let api = builder.build(request_token, &pin).await?;
     println!("{:?}", api);
 
-    let result = api.search_tweets("rust").await?;
+    let result = api.search_tweets().q("rust").send().await?;
 
     for tweet in result.statuses {
         let user = tweet.user;
