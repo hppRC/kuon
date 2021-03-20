@@ -13,24 +13,6 @@ pub struct PremiumSearchResult {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct FavoriteResult {
-    pub user: User,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct RetweetResult {
-    pub user: User,
-    pub retweeted_status: Value,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct TweetResult {
-    pub created_at: Value,
-    pub id: u64,
-    pub text: Value,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SearchMetadata {
     pub completed_in: f64,
     pub count: u64,
