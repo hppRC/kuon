@@ -1,0 +1,17 @@
+[package]
+authors = ["hppRC <hpp.ricecake@gmail.com>"]
+edition = "2018"
+name = "kuon_macro"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+kuon_request_derive = {path = "kuon_request_derive"}
+
+[workspace]
+
+members = [
+  "kuon_request_derive",
+  "proc_macro_utils",
+]
