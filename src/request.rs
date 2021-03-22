@@ -32,12 +32,12 @@ impl TwitterAPI {
             .headers(headers)
             .send()
             .await
-            .map_err(|source| Error::HTTPRequestError(source))
+            .map_err(Error::HTTPRequestError)
             .with_context(|| "HTTP request failed.")?
             .text()
             .await
             .with_context(|| "Response body is invalid.")
-            .map_err(|source| Error::Error(source.into()))
+            .map_err(Error::Error)
     }
 
     pub async fn raw_get<T>(
@@ -50,10 +50,10 @@ impl TwitterAPI {
     {
         let text = self.request(endpoint, Method::GET, params).await?;
 
-        serde_json::from_str::<T>(&text).or_else(|e| {
+        serde_json::from_str::<T>(&text).map_err(|e| {
             match serde_json::from_str::<TwitterAPIErrorMessage>(&text) {
-                Ok(v) => Err(Error::TwitterAPIError(v, format!("{:?}", params))),
-                Err(_) => Err(Error::JsonParsingError(e.into(), text)),
+                Ok(v) => Error::TwitterAPIError(v, format!("{:?}", params)),
+                Err(_) => Error::JsonParsingError(e.into(), text),
             }
         })
     }
@@ -67,10 +67,10 @@ impl TwitterAPI {
         T: DeserializeOwned,
     {
         let text = self.request(endpoint, Method::POST, params).await?;
-        serde_json::from_str::<T>(&text).or_else(|e| {
+        serde_json::from_str::<T>(&text).map_err(|e| {
             match serde_json::from_str::<TwitterAPIErrorMessage>(&text) {
-                Ok(v) => Err(Error::TwitterAPIError(v, format!("{:?}", params))),
-                Err(_) => Err(Error::JsonParsingError(e.into(), text)),
+                Ok(v) => Error::TwitterAPIError(v, format!("{:?}", params)),
+                Err(_) => Error::JsonParsingError(e.into(), text),
             }
         })
     }

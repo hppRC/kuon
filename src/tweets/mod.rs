@@ -11,5 +11,5 @@ pub use home_timeline::*;
 pub use retweet::*;
 pub use search::*;
 pub use show_tweet::*;
-pub use tweet::*;
-pub use user_timeline::*;
+pub use tweet::Tweet as TweetRequest;
+pub use user_timeline::UserTimeline as UserTimelineRequest;

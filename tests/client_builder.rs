@@ -30,7 +30,7 @@ async fn client_builder_for_oauth() -> Result<()> {
         .api_key(api_key)
         .api_secret_key(api_secret_key);
 
-    let url = builder.pre_build(kuon::Callback::PIN).await?;
+    let url = builder.pre_build(kuon::Callback::Pin).await?;
     println!("{:?}", url);
 
     Ok(())
