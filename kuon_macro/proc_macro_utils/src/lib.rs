@@ -1,8 +1,6 @@
-use quote::{format_ident, quote};
 use syn::{
-    parse_macro_input, Attribute, Data, DeriveInput, Error, Fields, FieldsNamed, GenericArgument,
-    Generics, Lit, Meta, MetaList, MetaNameValue, NestedMeta, Path, PathArguments, PathSegment,
-    Type, TypePath,
+    Data, Fields, FieldsNamed, GenericArgument, Generics, Path, PathArguments, PathSegment, Type,
+    TypeParam, TypePath,
 };
 
 pub fn is_option_type(ty: &Type) -> bool {
@@ -19,6 +17,16 @@ pub fn is_vec_type(ty: &Type) -> bool {
     }
 }
 
+pub fn is_int_type(ty: &Type) -> bool {
+    match last_path_segment(&ty) {
+        std::option::Option::Some(path_seg) => matches!(
+            path_seg.ident.to_string().as_str(),
+            "u128" | "u64" | "u32" | "u8" | "i128" | "i64" | "i32" | "i8"
+        ),
+        std::option::Option::None => false,
+    }
+}
+
 pub fn extract_inner_type(ty: &Type) -> &GenericArgument {
     match last_path_segment(&ty) {
         std::option::Option::Some(PathSegment {
@@ -31,8 +39,8 @@ pub fn extract_inner_type(ty: &Type) -> &GenericArgument {
 }
 
 pub fn last_path_segment(ty: &Type) -> std::option::Option<&PathSegment> {
-    match ty {
-        &Type::Path(TypePath {
+    match *ty {
+        Type::Path(TypePath {
             qself: std::option::Option::None,
             path:
                 Path {
@@ -52,4 +60,24 @@ pub fn extract_struct_fields(data: &Data) -> &FieldsNamed {
         },
         _ => panic!("invalid data"),
     }
+}
+
+pub fn count_generics_tyeps(Generics { params, .. }: &Generics) -> u64 {
+    params
+        .iter()
+        .map(|param| match param {
+            syn::GenericParam::Type(_) => 1,
+            _ => 0,
+        })
+        .sum()
+}
+
+pub fn extract_generics_names(Generics { params, .. }: &Generics) -> Vec<String> {
+    params
+        .iter()
+        .filter_map(|param| match param {
+            syn::GenericParam::Type(TypeParam { ident, .. }) => Some(ident.to_string()),
+            _ => None,
+        })
+        .collect()
 }

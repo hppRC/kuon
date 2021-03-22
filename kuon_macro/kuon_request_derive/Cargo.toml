@@ -15,3 +15,4 @@ proc-macro2 = "1.0.24"
 proc_macro_utils = {path = "../proc_macro_utils"}
 quote = "1.0.9"
 syn = "1.0.64"
+heck = "0.3.2"

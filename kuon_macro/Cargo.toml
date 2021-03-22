@@ -8,10 +8,3 @@ version = "0.1.0"
 
 [dependencies]
 kuon_request_derive = {path = "kuon_request_derive"}
-
-[workspace]
-
-members = [
-  "kuon_request_derive",
-  "proc_macro_utils",
-]
