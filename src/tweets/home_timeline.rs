@@ -3,6 +3,23 @@ use anyhow::Result;
 use kuon_macro::KuonRequest;
 
 #[derive(Clone, Debug, KuonRequest)]
+#[doc = r"
+# GET statuses/home_timeline
+Returns a collection of the most recent Tweets and Retweets posted by the authenticating user and the users they follow. The home timeline is central to how most users interact with the Twitter service.
+Up to 800 Tweets are obtainable on the home timeline. It is more volatile for users that follow many users or follow users who Tweet frequently.
+
+See Working with Timelines for instructions on traversing timelines efficiently.
+
+## Resource Information
+
+Q.|A.
+-|-
+Requires authentication? | Yes (user context only)
+Rate limited? | Yes
+Requests / 15-min window (user auth) | 15
+
+https://developer.twitter.com/en/docs/twitter-api/v1/tweets/timelines/api-reference/get-statuses-home_timeline
+"]
 pub struct HomeTimeline<'a> {
     api: &'a TwitterAPI,
     #[doc = "Specifies the number of records to retrieve. Must be less than or equal to 200. Defaults to 20. The value of count is best thought of as a limit to the number of tweets to return because suspended or deleted content is removed after the count has been applied."]

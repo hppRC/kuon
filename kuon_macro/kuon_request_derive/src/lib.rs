@@ -12,9 +12,10 @@ use syn::{
     GenericParam, Generics, Token, TypeParam, TypeTuple,
 };
 
-#[proc_macro_derive(KuonRequest, attributes(builder))]
+#[proc_macro_derive(KuonRequest)]
 pub fn derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let item = parse_macro_input!(input as DeriveInput);
+    let func_doc = extract_doc_attr(&item.attrs);
     let struct_name = item.ident;
     let struct_name_snake = format_ident!("{}", struct_name.to_string().to_snake_case());
     let fields = extract_struct_fields(&item.data);
@@ -80,6 +81,7 @@ pub fn derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
 
     let expanded = quote! {
         impl TwitterAPI {
+            #func_doc
             pub fn #struct_name_snake(&self) -> #struct_name<#(#units),*> {
                 #struct_name {
                     api: self,

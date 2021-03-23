@@ -3,6 +3,36 @@ use anyhow::Result;
 use kuon_macro::KuonRequest;
 
 #[derive(Clone, Debug, KuonRequest)]
+#[doc = r#"
+# GET statuses/user_timeline
+Important notice: On June 19, 2019, we began enforcing a limit of 100,000 requests per day to the /statuses/user_timeline endpoint, in addition to existing user-level and app-level rate limits. This limit is applied on a per-application basis, meaning that a single developer app can make up to 100,000 calls during any single 24-hour period.
+
+Returns a collection of the most recent Tweets posted by the user indicated by the screen_name or user_id parameters.
+
+User timelines belonging to protected users may only be requested when the authenticated user either "owns" the timeline or is an approved follower of the owner.
+
+The timeline returned is the equivalent of the one seen as a user's profile on Twitter.
+
+This method can only return up to 3,200 of a user's most recent Tweets. Native retweets of other statuses by the user is included in this total, regardless of whether include_rts is set to false when requesting this resource.
+
+See Working with Timelines for instructions on traversing timelines.
+
+See Embedded Timelines, Embedded Tweets, and GET statuses/oembed for tools to render Tweets according to Display Requirements.
+
+
+
+## Resource Information
+
+Q.|A.
+-|-
+Requires authentication?|Yes
+Rate limited?|Yes
+Requests / 15-min window (user auth)|900
+Requests / 15-min window (app auth)|1500
+Requests / 24-hour window|100,000
+
+https://developer.twitter.com/en/docs/twitter-api/v1/tweets/timelines/api-reference/get-statuses-user_timeline
+"#]
 pub struct UserTimeline<'a> {
     api: &'a TwitterAPI,
     #[doc = "The ID of the user for whom to return results."]

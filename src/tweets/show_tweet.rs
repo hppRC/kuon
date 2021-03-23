@@ -3,6 +3,26 @@ use anyhow::Result;
 use kuon_macro::KuonRequest;
 
 #[derive(Clone, Debug, KuonRequest)]
+#[doc = r#"
+# GET statuses/show/:id
+Returns a single Tweet, specified by the id parameter. The Tweet's author will also be embedded within the Tweet.
+
+See GET statuses / lookup for getting Tweets in bulk (up to 100 per call). See also Embedded Timelines, Embedded Tweets, and GET statuses/oembed for tools to render Tweets according to Display Requirements.
+
+### About Geo
+If there is no geotag for a status, then there will be an empty `<geo></geo>` or `"geo" : {}`. This can only be populated if the user has used the Geotagging API to send a statuses/update.
+
+The JSON response mostly uses conventions laid out in GeoJSON. The coordinates that Twitter renders are reversed from the GeoJSON specification (GeoJSON specifies a longitude then a latitude, whereas Twitter represents it as a latitude then a longitude), eg: `"geo": { "type":"Point", "coordinates":[37.78029, -122.39697] }`
+
+Q.|A.
+-|-
+Requires authentication?|Yes
+Rate limited?|Yes
+Requests / 15-min window (user auth)|900
+Requests / 15-min window (app auth)|900
+
+https://developer.twitter.com/en/docs/twitter-api/v1/tweets/post-and-engage/api-reference/get-statuses-show-id
+"#]
 pub struct ShowTweet<'a, Id> {
     api: &'a TwitterAPI,
     #[doc = "**(required)**

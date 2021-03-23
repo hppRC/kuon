@@ -3,6 +3,24 @@ use anyhow::Result;
 use kuon_macro::KuonRequest;
 
 #[derive(Clone, Debug, KuonRequest)]
+#[doc = r"
+# Standard search API
+
+Returns a collection of relevant Tweets matching a specified query.
+
+Please note that Twitter's search service and, by extension, the Search API is not meant to be an exhaustive source of Tweets. Not all Tweets will be indexed or made available via the search interface.
+
+To learn how to use Twitter Search effectively, please see the Standard search operators page for a list of available filter operators. Also, see the Working with Timelines page to learn best practices for navigating results by since_id and max_id.
+
+Q.|A.
+-|-
+Requires authentication?|Yes
+Rate limited?|Yes
+Requests / 15-min window (user auth)|180
+Requests / 15-min window (app auth)|450
+
+https://developer.twitter.com/en/docs/twitter-api/v1/tweets/search/api-reference/get-search-tweets
+"]
 pub struct SearchTweets<'a, Q> {
     api: &'a TwitterAPI,
     #[doc = "**(required)**
