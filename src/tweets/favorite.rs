@@ -5,7 +5,10 @@ use kuon_macro::KuonRequest;
 #[derive(Clone, Debug, KuonRequest)]
 pub struct Favorite<'a, Id> {
     api: &'a TwitterAPI,
+    #[doc = "**(required)**
+The numerical ID of the Tweet to like."]
     id: Id,
+    #[doc = "The entities node will be omitted when set to false."]
     include_entities: Option<bool>,
 }
 

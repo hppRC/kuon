@@ -6,7 +6,10 @@ use std::fmt::Display;
 #[derive(Clone, Debug, KuonRequest)]
 pub struct Retweet<'a, Id> {
     api: &'a TwitterAPI,
+    #[doc = "**(required)**
+The numerical ID of the desired status."]
     id: Id,
+    #[doc = "When set to either true , t or 1 , each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object."]
     trim_user: Option<bool>,
 }
 
