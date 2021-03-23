@@ -3,7 +3,22 @@ use anyhow::Result;
 use kuon_macro::KuonRequest;
 
 #[derive(Clone, Debug, KuonRequest)]
-#[doc = r"
+#[doc = r#"
+
+# Example
+
+```no_run
+# use anyhow::Result;
+# async fn doc() -> Result<()> {
+let api = kuon::TwitterAPI::new_using_env().await?;
+let res = api.search_tweets().q("rust").count(100).send().await?;
+for tweet in res.statuses {
+    println!("{}", tweet.text);
+}
+# Ok(())
+# }
+```
+
 # Standard search API
 
 Returns a collection of relevant Tweets matching a specified query.
@@ -20,7 +35,7 @@ Requests / 15-min window (user auth)|180
 Requests / 15-min window (app auth)|450
 
 https://developer.twitter.com/en/docs/twitter-api/v1/tweets/search/api-reference/get-search-tweets
-"]
+"#]
 pub struct SearchTweets<'a, Q> {
     api: &'a TwitterAPI,
     #[doc = "**(required)**

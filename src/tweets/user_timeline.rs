@@ -4,6 +4,21 @@ use kuon_macro::KuonRequest;
 
 #[derive(Clone, Debug, KuonRequest)]
 #[doc = r#"
+
+# Example
+
+```no_run
+# use anyhow::Result;
+# async fn doc() -> Result<()> {
+let api = kuon::TwitterAPI::new_using_env().await?;
+let res = api.user_timeline().screen_name("rustlang").count(10).send().await?;
+for tweet in res {
+    println!("{}", tweet.text);
+}
+# Ok(())
+# }
+```
+
 # GET statuses/user_timeline
 Important notice: On June 19, 2019, we began enforcing a limit of 100,000 requests per day to the /statuses/user_timeline endpoint, in addition to existing user-level and app-level rate limits. This limit is applied on a per-application basis, meaning that a single developer app can make up to 100,000 calls during any single 24-hour period.
 

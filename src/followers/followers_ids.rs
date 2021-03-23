@@ -4,6 +4,17 @@ use kuon_macro::KuonRequest;
 
 #[derive(Clone, Debug, KuonRequest)]
 #[doc = r#"
+# Example
+
+```no_run
+# use anyhow::Result;
+# async fn doc() -> Result<()> {
+let api = kuon::TwitterAPI::new_using_env().await?;
+let res = api.followers_ids().screen_name("rustlang").count(100).send().await?;
+# Ok(())
+# }
+```
+
 # GET followers/ids
 Returns a cursored collection of user IDs for every user following the specified user.
 At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 5,000 user IDs and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See Using cursors to navigate collections for more information.

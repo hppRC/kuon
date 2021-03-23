@@ -5,6 +5,18 @@ use std::fmt::Display;
 
 #[derive(Clone, Debug, KuonRequest)]
 #[doc = r#"
+
+# Example
+
+```no_run
+# use anyhow::Result;
+# async fn doc() -> Result<()> {
+let api = kuon::TwitterAPI::new_using_env().await?;
+let res = api.retweet().id(1367127631175499779u64).trim_user(true).send().await?;
+# Ok(())
+# }
+```
+
 # POST statuses/retweet/:id
 
 Retweets a tweet. Returns the original Tweet with Retweet details embedded.

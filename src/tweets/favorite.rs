@@ -3,7 +3,19 @@ use anyhow::Result;
 use kuon_macro::KuonRequest;
 
 #[derive(Clone, Debug, KuonRequest)]
-#[doc = r"
+#[doc = r#"
+
+# Example
+
+```no_run
+# use anyhow::Result;
+# async fn doc() -> Result<()> {
+let api = kuon::TwitterAPI::new_using_env().await?;
+let res = api.favorite().id(0).include_entities(true).send().await?;
+# Ok(())
+# }
+```
+
 # POST favorites/create
 Note: favorites are now known as likes.
 Favorites (likes) the Tweet specified in the ID parameter as the authenticating user. Returns the favorite Tweet when successful.
@@ -18,7 +30,7 @@ Rate limited?|Yes
 Requests / 24-hour window|1000 per user; 1000 per app
 
 https://developer.twitter.com/en/docs/twitter-api/v1/tweets/post-and-engage/api-reference/post-favorites-create
-"]
+"#]
 pub struct Favorite<'a, Id> {
     api: &'a TwitterAPI,
     #[doc = "**(required)**

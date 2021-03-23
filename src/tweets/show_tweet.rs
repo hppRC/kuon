@@ -4,6 +4,18 @@ use kuon_macro::KuonRequest;
 
 #[derive(Clone, Debug, KuonRequest)]
 #[doc = r#"
+
+# Example
+
+```no_run
+# use anyhow::Result;
+# async fn doc() -> Result<()> {
+let api = kuon::TwitterAPI::new_using_env().await?;
+let tweet = api.show_tweet().id(1283742285381816320u64).send().await?;
+# Ok(())
+# }
+```
+
 # GET statuses/show/:id
 Returns a single Tweet, specified by the id parameter. The Tweet's author will also be embedded within the Tweet.
 

@@ -6,10 +6,10 @@ use kuon_macro::KuonRequest;
 #[doc = r#"
 
 # Example
-```
+
+```no_run
 # use anyhow::Result;
 # async fn doc() -> Result<()> {
-
 let api = kuon::TwitterAPI::new_using_env().await?;
 let res = api.tweet().status("this is test tweet from kuon.").send().await?;
 # Ok(())
