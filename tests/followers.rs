@@ -7,7 +7,6 @@ async fn followers_ids() -> Result<()> {
         .followers_ids()
         .screen_name("rustlang")
         .cursor(-1)
-        .stringify_ids(false)
         .count(100)
         .send()
         .await;
