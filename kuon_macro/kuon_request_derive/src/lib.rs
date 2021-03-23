@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use heck::SnakeCase;
 use proc_macro2::{Ident, TokenStream};
 use proc_macro_utils::{
-    count_generics_tyeps, extract_doc_attr, extract_generics_names, extract_inner_type,
+    count_generics_types, extract_doc_attr, extract_generics_names, extract_inner_type,
     extract_struct_fields, is_int_type, is_option_type, is_vec_type,
 };
 use quote::{format_ident, quote};
@@ -20,7 +20,7 @@ pub fn derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let struct_name_snake = format_ident!("{}", struct_name.to_string().to_snake_case());
     let fields = extract_struct_fields(&item.data);
     let generics = item.generics;
-    let generic_types_count = count_generics_tyeps(&generics);
+    let generic_types_count = count_generics_types(&generics);
     let generics_names = extract_generics_names(&generics);
     let unit = TypeTuple {
         paren_token: Default::default(),

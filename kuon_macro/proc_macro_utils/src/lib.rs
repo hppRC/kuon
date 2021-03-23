@@ -63,7 +63,7 @@ pub fn extract_struct_fields(data: &Data) -> &FieldsNamed {
     }
 }
 
-pub fn count_generics_tyeps(Generics { params, .. }: &Generics) -> u64 {
+pub fn count_generics_types(Generics { params, .. }: &Generics) -> u64 {
     params
         .iter()
         .map(|param| match param {
