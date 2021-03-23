@@ -1,6 +1,7 @@
+use if_chain::if_chain;
 use syn::{
-    Data, Fields, FieldsNamed, GenericArgument, Generics, Path, PathArguments, PathSegment, Type,
-    TypeParam, TypePath,
+    Attribute, Data, Fields, FieldsNamed, GenericArgument, Generics, Meta, MetaNameValue, Path,
+    PathArguments, PathSegment, Type, TypeParam, TypePath,
 };
 
 pub fn is_option_type(ty: &Type) -> bool {
@@ -80,4 +81,23 @@ pub fn extract_generics_names(Generics { params, .. }: &Generics) -> Vec<String>
             _ => None,
         })
         .collect()
+}
+
+pub fn extract_doc_attr(attrs: &[Attribute]) -> std::option::Option<Attribute> {
+    attrs.iter().find_map(|attr| {
+        if_chain! {
+            if let Ok(
+                Meta::NameValue(
+                    MetaNameValue { path, ..}
+                )
+            ) = attr.parse_meta();
+            if path.get_ident()? == "doc";
+            then {
+                std::option::Option::Some(attr.clone())
+            }
+            else {
+                std::option::Option::None
+            }
+        }
+    })
 }

@@ -10,3 +10,4 @@ version = "0.1.0"
 proc-macro2 = "1.0.24"
 quote = "1.0.9"
 syn = {version = "1.0.64", features = ["extra-traits"]}
+if_chain = "1.0.1"
