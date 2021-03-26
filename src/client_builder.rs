@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use crate::{models::bearer::BearerToken, OAuthRequestToken};
 use crate::{OAuthToken, TwitterAPI};
 use anyhow::{Context, Result};
@@ -48,16 +50,17 @@ pub struct ClientBuilder<AccessTokenType, AccessTokenSecretType, ApiKeyType, Api
 }
 
 pub enum Callback {
-    PIN,
-    URL(String),
+    Pin,
+    Url(String),
 }
 
-impl Callback {
-    fn to_string(self) -> String {
-        match self {
-            Self::PIN => String::from("oob"),
-            Self::URL(url) => url,
-        }
+impl Display for Callback {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let string = match self {
+            Self::Pin => String::from("oob"),
+            Self::Url(url) => url.to_string(),
+        };
+        write!(f, "{}", string)
     }
 }
 
@@ -122,22 +125,22 @@ impl ClientBuilder<(), (), String, String> {
         callback: Callback,
     ) -> Result<OAuthRequestToken> {
         let endpoint = "https://api.twitter.com/oauth/request_token";
-        let oauth_nonce: &str = &format!("nonce{}", Utc::now().timestamp());
-        let oauth_signature_method: &str = "HMAC-SHA1";
-        let oauth_timestamp: &str = &format!("{}", Utc::now().timestamp());
-        let oauth_version: &str = "1.0";
+        let oauth_nonce = format!("nonce{}", Utc::now().timestamp());
+        let oauth_signature_method = "HMAC-SHA1".to_string();
+        let oauth_timestamp = format!("{}", Utc::now().timestamp());
+        let oauth_version = "1.0".to_string();
         let oauth_callback = callback.to_string();
 
         let params = hashmap! {
             "oauth_nonce" => oauth_nonce,
-            "oauth_callback" => &oauth_callback,
+            "oauth_callback" => oauth_callback,
             "oauth_version" => oauth_version,
             "oauth_timestamp" => oauth_timestamp,
-            "oauth_consumer_key" => &api.api_key,
+            "oauth_consumer_key" => api.api_key.clone(),
             "oauth_signature_method" => oauth_signature_method,
         };
 
-        let res = api.request(endpoint, Method::POST, &params).await?;
+        let res: String = api.request(endpoint, Method::POST, &params).await?;
 
         OAuthRequestToken::from(&res).with_context(|| "Failed parse")
     }

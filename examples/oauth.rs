@@ -10,7 +10,7 @@ async fn main() -> Result<()> {
     let builder = kuon::TwitterAPI::builder()
         .api_key(api_key)
         .api_secret_key(api_secret_key);
-    let request_token = builder.pre_build(kuon::Callback::PIN).await?;
+    let request_token = builder.pre_build(kuon::Callback::Pin).await?;
 
     println!(
         "Please access https://api.twitter.com/oauth/authorize?oauth_token={}",
@@ -25,7 +25,7 @@ async fn main() -> Result<()> {
     let api = builder.build(request_token, &pin).await?;
     println!("{:?}", api);
 
-    let result = api.search_tweets("rust").await?;
+    let result = api.search_tweets().q("rust").send().await?;
 
     for tweet in result.statuses {
         let user = tweet.user;

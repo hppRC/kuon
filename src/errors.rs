@@ -4,10 +4,10 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum Error {
-    #[error("Twitter API error!\n{0}")]
-    TwitterAPIError(TwitterAPIErrorMessage),
-    #[error("Invalid json format.")]
-    JsonParsingError(anyhow::Error),
+    #[error("Twitter API error!\n{0}params:\n{1}")]
+    TwitterAPIError(TwitterAPIErrorMessage, String),
+    #[error("\n{1}\nInvalid json format.\n{0}")]
+    JsonParsingError(anyhow::Error, String),
     #[error(transparent)]
     HTTPRequestError(reqwest::Error),
     /// Represents all other cases of `std::io::Error`.

@@ -12,9 +12,13 @@ impl TwitterAPI {
         &self,
         endpoint: &str,
         method: reqwest::Method,
-        params: &HashMap<&str, &str>,
+        params: &HashMap<&str, String>,
     ) -> Result<String, Error> {
-        let token = self.create_oauth_header(endpoint, &method.to_string(), params);
+        let mut params_ref: HashMap<&str, &str> = maplit::hashmap! {};
+        for (&k, v) in params {
+            params_ref.insert(k, v);
+        }
+        let token = self.create_oauth_header(endpoint, &method.to_string(), &params_ref);
         let parsed_token = token
             .parse::<HeaderValue>()
             .map_err(|source| Error::Error(source.into()))?;
@@ -24,28 +28,32 @@ impl TwitterAPI {
 
         self.client
             .request(method, endpoint)
-            .query(&params)
+            .query(&params_ref)
             .headers(headers)
             .send()
             .await
-            .map_err(|source| Error::HTTPRequestError(source))
+            .map_err(Error::HTTPRequestError)
             .with_context(|| "HTTP request failed.")?
             .text()
             .await
             .with_context(|| "Response body is invalid.")
-            .map_err(|source| Error::Error(source.into()))
+            .map_err(Error::Error)
     }
 
-    pub async fn raw_get<T>(&self, endpoint: &str, params: &HashMap<&str, &str>) -> Result<T, Error>
+    pub async fn raw_get<T>(
+        &self,
+        endpoint: &str,
+        params: &HashMap<&str, String>,
+    ) -> Result<T, Error>
     where
         T: DeserializeOwned,
     {
         let text = self.request(endpoint, Method::GET, params).await?;
 
-        serde_json::from_str::<T>(&text).or_else(|_| {
+        serde_json::from_str::<T>(&text).map_err(|e| {
             match serde_json::from_str::<TwitterAPIErrorMessage>(&text) {
-                Ok(v) => Err(Error::TwitterAPIError(v)),
-                Err(e) => Err(Error::JsonParsingError(e.into())),
+                Ok(v) => Error::TwitterAPIError(v, format!("{:?}", params)),
+                Err(_) => Error::JsonParsingError(e.into(), text),
             }
         })
     }
@@ -53,16 +61,16 @@ impl TwitterAPI {
     pub async fn raw_post<T>(
         &self,
         endpoint: &str,
-        params: &HashMap<&str, &str>,
+        params: &HashMap<&str, String>,
     ) -> Result<T, Error>
     where
         T: DeserializeOwned,
     {
         let text = self.request(endpoint, Method::POST, params).await?;
-        serde_json::from_str::<T>(&text).or_else(|_| {
+        serde_json::from_str::<T>(&text).map_err(|e| {
             match serde_json::from_str::<TwitterAPIErrorMessage>(&text) {
-                Ok(v) => Err(Error::TwitterAPIError(v)),
-                Err(e) => Err(Error::JsonParsingError(e.into())),
+                Ok(v) => Error::TwitterAPIError(v, format!("{:?}", params)),
+                Err(_) => Error::JsonParsingError(e.into(), text),
             }
         })
     }

@@ -4,12 +4,13 @@ use anyhow::Result;
 async fn favorite() -> Result<()> {
     let api: kuon::TwitterAPI = kuon::TwitterAPI::new_using_env().await?;
 
-    let res: kuon::SearchResult = api.search_tweets("にじさんじ").await?;
-    let tweet: kuon::Tweet = res.statuses[0].clone();
-    assert!(tweet.text.len() > 0);
+    let res: Result<kuon::Tweet, kuon::Error> =
+        api.favorite().id(0).include_entities(true).send().await;
+    match res {
+        Ok(v) => assert!(v.user.screen_name.len() >= 1),
+        Err(kuon::Error::TwitterAPIError(e, _)) => assert!(e.errors.len() >= 1),
+        _ => panic!("panic with favorite test"),
+    }
 
-    // let res: kuon::FavoriteResult = api.favorite(&tweet.id_str).await?;
-
-    // assert_eq!(res.user, "");
     Ok(())
 }

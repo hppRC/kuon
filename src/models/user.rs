@@ -58,6 +58,58 @@ pub struct User {
     translator_type: Option<Value>,
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct TrimUser {
+    pub id: u64,
+    pub id_str: String,
+    pub name: Option<String>,
+    pub screen_name: Option<String>,
+    pub location: Option<String>,
+    pub url: Option<String>,
+    pub description: Option<String>,
+    pub protected: Option<bool>,
+    pub verified: Option<bool>,
+    pub followers_count: Option<u64>,
+    pub friends_count: Option<u64>,
+    pub listed_count: Option<u64>,
+    pub favourites_count: Option<u64>,
+    pub statuses_count: Option<u64>,
+
+    pub profile_banner_url: Option<String>,
+    pub profile_image_url_https: Option<String>,
+    pub default_profile: Option<bool>,
+    pub default_profile_image: Option<bool>,
+    pub entities: Option<UserEntities>,
+
+    // Enterprise only
+    pub derived: Option<Vec<Value>>,
+
+    // No longer supported (deprecated) attributes
+    utc_offset: Option<Value>,
+    time_zone: Option<Value>,
+    lang: Option<Value>,
+    geo_enabled: Option<Value>,
+    following: Option<Value>,
+    follow_request_sent: Option<Value>,
+    has_extended_profile: Option<Value>,
+    notifications: Option<Value>,
+    profile_location: Option<Value>,
+    contributors_enabled: Option<Value>,
+    profile_image_url: Option<Value>,
+    profile_background_color: Option<Value>,
+    profile_background_image_url: Option<Value>,
+    profile_background_image_url_https: Option<Value>,
+    profile_background_tile: Option<Value>,
+    profile_link_color: Option<Value>,
+    profile_sidebar_border_color: Option<Value>,
+    profile_sidebar_fill_color: Option<Value>,
+    profile_text_color: Option<Value>,
+    profile_use_background_image: Option<Value>,
+    is_translator: Option<Value>,
+    is_translation_enabled: Option<Value>,
+    translator_type: Option<Value>,
+}
+
 mod twitter_date {
     use chrono::{DateTime, Utc};
     use serde::de::{Unexpected, Visitor};

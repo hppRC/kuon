@@ -1,13 +1,15 @@
 mod favorite;
+mod home_timeline;
 mod retweet;
 mod search;
-mod show;
-mod statuses;
+mod show_tweet;
 mod tweet;
+mod user_timeline;
 
 pub use favorite::*;
+pub use home_timeline::*;
 pub use retweet::*;
 pub use search::*;
-pub use show::*;
-pub use statuses::*;
-pub use tweet::*;
+pub use show_tweet::*;
+pub use tweet::Tweet as TweetRequest;
+pub use user_timeline::UserTimeline as UserTimelineRequest;
