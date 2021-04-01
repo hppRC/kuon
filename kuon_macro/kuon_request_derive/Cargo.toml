@@ -11,7 +11,7 @@ proc-macro = true
 
 [dependencies]
 kuon = "0.0.22"
-proc-macro2 = "1.0.24"
+proc-macro2 = "1.0.26"
 proc_macro_utils = {path = "../proc_macro_utils"}
 quote = "1.0.9"
 syn = "1.0.64"
