@@ -1,0 +1,18 @@
+[package]
+authors = ["hppRC <hpp.ricecake@gmail.com>"]
+categories = ["api-bindings"] # https://crates.io/category_slugs
+description = "Twitter Client Library written in Rust"
+edition = "2018"
+keywords = []
+license = "MIT"
+name = "kuon_proc_macro_utils"
+readme = "README.md"
+repository = "https://github.com/hppRC/kuon"
+version = "0.0.0"
+
+[dependencies]
+if_chain = "1.0.1"
+proc-macro2 = "1.0.24"
+quote = "1.0.9"
+syn = {version = "1.0.64", features = ["extra-traits"]}
+kuon_proc_macro_utils = { path = "." }
