@@ -8,7 +8,7 @@ license = "MIT"
 name = "kuon_request_derive"
 readme = "README.md"
 repository = "https://github.com/hppRC/kuon"
-version = "0.0.0"
+version = "0.0.1"
 
 [lib]
 proc-macro = true
