@@ -1,11 +1,11 @@
 use std::collections::HashMap;
 
 use heck::SnakeCase;
-use proc_macro2::{Ident, TokenStream};
-use proc_macro_utils::{
+use kuon_proc_macro_utils::{
     count_generics_types, extract_doc_attr, extract_generics_names, extract_inner_type,
     extract_struct_fields, is_int_type, is_option_type, is_vec_type,
 };
+use proc_macro2::{Ident, TokenStream};
 use quote::{format_ident, quote};
 use syn::{
     parse_macro_input, punctuated::Punctuated, Attribute, DeriveInput, Field, FieldsNamed,
