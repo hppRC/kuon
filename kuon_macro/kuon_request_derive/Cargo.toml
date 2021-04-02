@@ -15,7 +15,6 @@ proc-macro = true
 
 [dependencies]
 heck = "0.3.2"
-kuon = "0.0.22"
 kuon_proc_macro_utils = {version = "^0", path = "../kuon_proc_macro_utils"}
 proc-macro2 = "1.0.24"
 quote = "1.0.9"
