@@ -3,6 +3,7 @@ pub(crate) mod bearer;
 mod entity;
 mod oauth;
 mod result;
+pub(crate) mod serde_twitter_data;
 mod tweet;
 mod twitter_api;
 mod user;
