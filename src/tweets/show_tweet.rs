@@ -60,6 +60,6 @@ where
         let endpoint = "https://api.twitter.com/1.1/statuses/show.json";
         let params = self.to_hashmap();
 
-        self.api.raw_post(endpoint, &params).await
+        self.api.raw_get(endpoint, &params).await
     }
 }
